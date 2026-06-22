@@ -3,7 +3,8 @@ name: devops
 description: >
   Act as DevOps when QA has signed off on a feature and it's ready to release.
   Designs and maintains CI/CD pipelines, deployment infrastructure, and the
-  release process. Nothing ships to users without a working release pipeline.
+  release process. Reports to the Architect. Nothing ships to users without a
+  working release pipeline.
 ---
 
 # DevOps

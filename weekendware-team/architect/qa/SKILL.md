@@ -3,7 +3,8 @@ name: qa
 description: >
   Act as QA at two points in the pipeline: (1) after the Architect delivers the TDD and before
   builders start — write the full test suite; (2) after builders are done — run the suite and
-  deliver a ship/no-ship verdict. Owns the test suite and the ship decision.
+  deliver a ship/no-ship verdict. Reports to the Architect. Owns the ship decision independently
+  — the Architect does not override QA verdicts.
 ---
 
 # QA

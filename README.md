@@ -6,66 +6,75 @@ A software development shop run by one person. Claude agents fill the rest of th
 
 Instead of hiring a team, you hire agents — each one scoped to a specific role in the development lifecycle. Each agent has a `SKILL.md` that defines its role, behaviour, and constraints. Skills are not prompts — they're job descriptions. They tell the agent who it is, what it's responsible for, and what it is not allowed to skip.
 
-## The rule
+## The rules
 
-**No spec, no build.**
+**No spec, no build. No tests, no code.**
 
-Every feature starts with the PM agent. It interviews the founder, synthesises the answers, and produces a structured spec. Nothing gets designed or built until there's an approved spec. This single rule eliminates the most common failure mode in solo development: building the wrong thing.
+Every feature starts with PM. Nothing gets designed or built until there's an approved spec. QA writes the full test suite from the spec and TDD before any code is written. Builders implement to make the tests pass.
 
 ## The team
 
 ```
-                              Gavin (COO)
-                                   │
-         ┌──────────┬──────────────┼──────────────┬──────────┬────────────┐
-         │          │              │              │          │            │
-        PM      Architect    Head of Design   Backend   Frontend         QA      DevOps   Copywriter
-                                   │           Builder    Builder
-                          ┌────────┴────────┐
-                      UX Designer     UI Designer
+                         Gavin (COO)
+                              │
+          ┌───────────────────┼──────────────────┬────────────┐
+          │                   │                  │            │
+         PM             Architect          Head of Design  Copywriter
+                              │                  │
+               ┌──────────────┼──────┐      ┌────┴────┐
+            Security         QA   DevOps    UX        UI
+
+                        Engineering
+                     ┌──────┴──────┐
+                  Backend       Frontend
 ```
 
-Gavin deals with PM, Architect, Head of Design, Backend Builder, Frontend Builder, QA, DevOps, and Copywriter directly. UX and UI report to the Head of Design.
+Gavin deals with PM, Architect, Head of Design, and Copywriter directly. Engineering (Backend and Frontend) reports to Gavin but is coordinated through the pipeline. QA, Security, and DevOps report to the Architect. UX and UI report to the Head of Design.
 
 ## The pipeline
 
 ```
-PM → Architect → Head of Design → UX → UI → QA (write tests) → Backend Builder + Frontend Builder → QA (validate) → DevOps
-                                                                          ↑
-                                                                    Copywriter (parallel — feeds Design Spec + strings)
+PM → Security (spec review) → Architect (TDD) → Head of Design → UX → UI
+                                                                        ↓
+                                             QA (write tests) → Backend + Frontend → QA (validate) → DevOps
+                                                      ↑
+                                                Copywriter (parallel — feeds strings + onboarding copy)
 ```
 
 ## The agents
 
 ### PM
-Takes a raw idea and turns it into a buildable spec. Runs a focused interview, confirms understanding, and produces a structured document covering: problem statement, user stories, acceptance criteria, out-of-scope items, dependencies, and risks.
+Takes a raw idea and turns it into a buildable spec. Runs a focused interview, confirms understanding, and produces a structured document covering: problem statement, user stories, acceptance criteria, out-of-scope items, dependencies, and risks. Always asks whether to start the build or save the spec for later.
 
 ### Architect
-Takes an approved spec and produces a Technical Design Document (TDD) before any code is written. Researches platform best practices, reasons about data structures and algorithms (with Big O analysis), thinks about scale and scaffolding, and designs the full technical approach — data model, API contract, and component breakdown.
+Gavin's single point of contact for all technical decisions. Manages Security, QA, and DevOps internally — Gavin never deals with them directly. Produces a Technical Design Document (TDD) from every approved spec: researches platform best practices, reasons about data structures and algorithms (with Big O analysis), thinks about scale and scaffolding, and designs the full technical approach.
+
+### Security _(reports to Architect)_
+Reviews every spec before the TDD is written, and every implementation before it ships. Covers: authentication gates, rate limiting, paywall enforcement at the API layer, AI cost exposure, abuse vectors, and secrets management. Delivers named requirements — not prose concerns.
+
+### QA _(reports to Architect)_
+Writes the full test suite from the approved TDD before builders start — translating every acceptance criterion into concrete, reproducible test cases. Validates the implementation after builders finish. Owns the ship/no-ship decision independently.
+
+### DevOps _(reports to Architect)_
+Designs and maintains CI/CD pipelines, deployment infrastructure, environment strategy, and monitoring. Every project has three long-lived branches: `main`, `staging`, `develop`. Feature branches are named `ddmmyy-feature-name`. Nothing ships to production without a working pipeline, monitoring, and a documented rollback procedure.
 
 ### Head of Design
-Gavin's single point of contact for all design. Manages UX and UI designers internally — Gavin never deals with them directly. Responsible for the WeekendWare brand document, which grows with every engagement and governs design decisions across all products and marketing.
+Gavin's single point of contact for all design decisions. Manages UX and UI internally. Establishes platform design conventions in conversation with Gavin before any UI work begins. Maintains the WeekendWare brand document, which governs all design and copy across every product.
 
 ### UX Designer _(reports to Head of Design)_
-Produces user flows and Figma wireframes from an approved spec. Defines the structural skeleton of every screen and state before any visual design begins. All wireframes are built in Figma — greyscale, structurally precise, no visual design decisions.
+Produces user flows and wireframes from an approved spec. Defines the structural skeleton of every screen and state before any visual design begins. Wireframes live in Figma where connected; structured markdown otherwise.
 
 ### UI Designer _(reports to Head of Design)_
-Produces final visual designs in Figma from approved wireframes and a TDD. Works within the platform conventions and design system established by the Head of Design, and delivers annotated Figma frames ready for the Frontend Builder.
+Produces final visual designs from approved wireframes. Follows the platform conventions and design system established by the Head of Design. Delivers annotated designs ready for the Frontend builder.
 
-### Backend Builder
-Implements the backend from the Architect's approved TDD. Reads the project `CLAUDE.md` before writing a line of code. Implements in order: storage → service → API layer. Tests every code path. Never ships without QA sign-off.
+### Backend _(Engineering)_
+Implements the backend from the Architect's approved TDD and QA's test suite. Implements in order: storage → service → API layer. Implementation is complete when every test in the QA suite passes.
 
-### Frontend Builder
-Implements the frontend from the approved Design Spec and TDD. Matches the Design Spec precisely — makes no design decisions. Handles all UI states, all platforms, and all platform-specific behaviour. Never hardcodes strings.
-
-### QA
-Tests every feature against the spec's acceptance criteria before anything ships. Writes test plans, executes manual and automated tests, files bug reports, and gives a clear ship/no-ship verdict. Safety features (guardrails, PHI handling) are always P0.
-
-### DevOps
-Designs and maintains CI/CD pipelines, deployment infrastructure, environment strategy, and monitoring. Nothing ships to production without a working pipeline and monitoring in place. Owns HIPAA-adjacent infrastructure posture for Basil.
+### Frontend _(Engineering)_
+Implements the frontend from the approved Design Spec, TDD, and QA test suite. Matches the Design Spec precisely — makes no design decisions. Handles all UI states and platform-specific behaviour. Never hardcodes strings.
 
 ### Copywriter
-Writes all product copy — in-app strings, Basil's conversational responses, onboarding copy, error messages, and notification text. Reads the brand document before writing anything. Flags all crisis-adjacent copy for clinical review. Delivers named string entries, not documents.
+Writes all product copy — in-app strings, conversational responses, onboarding copy, error messages, and notification text. Reads the brand document before writing anything. Flags all crisis-adjacent copy for clinical review. Delivers named string entries ready for `strings.xml`.
 
 ## What's in this repo
 
@@ -75,8 +84,18 @@ weekendware-team/
 │   ├── SKILL.md
 │   └── evals/evals.json
 ├── architect/
-│   ├── SKILL.md
-│   └── evals/evals.json
+│   ├── lead/
+│   │   ├── SKILL.md
+│   │   └── evals/evals.json
+│   ├── security/
+│   │   ├── SKILL.md
+│   │   └── evals/evals.json
+│   ├── qa/
+│   │   ├── SKILL.md
+│   │   └── evals/evals.json
+│   └── devops/
+│       ├── SKILL.md
+│       └── evals/evals.json
 ├── design/
 │   ├── lead/
 │   │   ├── SKILL.md
@@ -87,18 +106,13 @@ weekendware-team/
 │   └── ui/
 │       ├── SKILL.md
 │       └── evals/evals.json
-├── backend-builder/
-│   ├── SKILL.md
-│   └── evals/evals.json
-├── frontend-builder/
-│   ├── SKILL.md
-│   └── evals/evals.json
-├── qa/
-│   ├── SKILL.md
-│   └── evals/evals.json
-├── devops/
-│   ├── SKILL.md
-│   └── evals/evals.json
+├── engineering/
+│   ├── backend/
+│   │   ├── SKILL.md
+│   │   └── evals/evals.json
+│   └── frontend/
+│       ├── SKILL.md
+│       └── evals/evals.json
 └── copywriter/
     ├── SKILL.md
     └── evals/evals.json
