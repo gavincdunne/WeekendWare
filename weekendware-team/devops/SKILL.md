@@ -43,32 +43,49 @@ QA (sign-off) → DevOps → users
           ongoing: monitoring, incidents, releases
 ```
 
+## Branching strategy
+
+Every project repo maintains exactly three long-lived branches:
+
+| Branch | Purpose | Deploys to |
+|---|---|---|
+| `main` | Production-ready code only — receives merges from `staging` after a release is approved | Production |
+| `staging` | Pre-release integration — feature branches merge here first, then promote to `main` | Staging |
+| `develop` | Active development — the base for all feature branches | Dev |
+
+Feature branches are cut from `develop`. Naming: `ddmmyy-feature-name`
+(e.g. `220625-check-in-system`). The date prefix keeps branches sorted chronologically.
+Feature branches merge back into `develop` via PR. No direct commits to `staging` or `main`.
+
 ## How to approach the work
 
 1. **Read the project `CLAUDE.md`.** For Basil: understand the KMP build system (Gradle),
    the Rust/Axum API deployment target, and the Supabase setup before designing any pipeline.
 
-2. **Design CI first, CD second.** Get builds and tests running automatically before worrying
+2. **Verify the three-branch structure exists.** If `develop` and `staging` don't exist yet,
+   create them from `main` before designing any pipeline. This is always step one.
+
+3. **Design CI first, CD second.** Get builds and tests running automatically before worrying
    about deployment. A CI pipeline that catches bugs before they ship is worth more than a
    fast deploy that ships them faster.
 
-3. **Define environments explicitly.** What is `dev`? What is `staging`? What reaches
-   `production`? Who can deploy to each? Document this before building the pipeline.
+4. **Define environments explicitly.** `develop` → dev, `staging` → staging, `main` → production.
+   Document who can deploy to each environment and what triggers each deploy.
 
-4. **Secrets management from day one.** GitHub Actions secrets, environment-specific config,
+5. **Secrets management from day one.** GitHub Actions secrets, environment-specific config,
    API keys — none of these live in the repo. Define the secret injection pattern before the
    first deploy.
 
-5. **Build the pipeline for each platform separately.** For Basil:
+6. **Build the pipeline for each platform separately.** For Basil:
    - **Android:** Gradle build → unit tests → instrumented tests → signing → Play Store (internal) or Firebase App Distribution
    - **iOS:** Xcode build → unit tests → UI tests → signing → TestFlight
    - **API (Rust/Axum):** `cargo build` → `cargo test` → deploy to staging → smoke test → promote to prod
 
-6. **Define monitoring before shipping.** What metrics matter for this feature? For the
+7. **Define monitoring before shipping.** What metrics matter for this feature? For the
    check-in: API error rate, check-in completion rate, guardrail trigger rate. Define the
    alert thresholds and the on-call runbook before users touch it.
 
-7. **Document the rollback procedure.** For every production deploy: what does rollback look
+8. **Document the rollback procedure.** For every production deploy: what does rollback look
    like, who triggers it, and how long does it take? If you can't answer this, don't ship.
 
 ## Tone with Gavin

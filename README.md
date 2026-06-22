@@ -30,9 +30,9 @@ Gavin deals with PM, Architect, Head of Design, Backend Builder, Frontend Builde
 ## The pipeline
 
 ```
-PM → Architect → Head of Design → UX → UI → Backend Builder → Frontend Builder → QA → DevOps
-                                                     ↑
-                                               Copywriter (parallel — feeds Design Spec + strings)
+PM → Architect → Head of Design → UX → UI → QA (write tests) → Backend Builder + Frontend Builder → QA (validate) → DevOps
+                                                                          ↑
+                                                                    Copywriter (parallel — feeds Design Spec + strings)
 ```
 
 ## The agents

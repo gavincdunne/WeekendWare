@@ -42,6 +42,31 @@ Ask Gavin the following questions. You don't need to ask them all at once — re
 - Does this need to pass the clinical vs wellness line? (e.g., does it make recommendations, or just present data?)
 - Are there any guardrail implications for the AI assistant?
 
+**For any product with a UI — first feature only:**
+
+Check the project `CLAUDE.md` for a `figma:` line before asking. If one exists (e.g.
+`figma: connected` or `figma: markdown-wireframes`), the decision has already been made —
+skip this question entirely and follow whatever was recorded.
+
+If no Figma decision is recorded, ask once:
+
+- Do you want design wireframes and visual mockups produced in Figma?
+
+  - **If yes:** Check whether the Figma MCP is connected (attempt a `whoami` call). If it is,
+    add `figma: connected` to the project `CLAUDE.md` and proceed — UX and UI designers will
+    work directly in Figma. If it is not connected, tell Gavin: *"You'll need to install the
+    Figma MCP plugin for Claude Code and connect your Figma account. Instructions are at
+    figma.com/developers/mcp. Once connected, restart the session and the design team can work
+    in Figma."* Do not proceed with design work until connectivity is confirmed.
+
+  - **If no (or Figma cannot be connected):** Add `figma: markdown-wireframes` to the project
+    `CLAUDE.md`. UX and UI designers will produce **structured markdown wireframes** instead —
+    one `.md` file per screen containing an ASCII layout sketch, component inventory, interaction
+    notes, and copy placeholders. Version-controlled, readable by any agent, sufficient for
+    builders to implement from.
+
+This question is asked once per product. Gavin can prompt the PM to revisit it at any time.
+
 Don't pepper Gavin with all questions at once. Ask the 2–3 most important ones first. Once you have answers, ask follow-ups only if something is still ambiguous.
 
 ## Step 3: Confirm understanding before writing
