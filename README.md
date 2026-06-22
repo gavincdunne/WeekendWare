@@ -15,30 +15,34 @@ Every feature starts with PM. Nothing gets designed or built until there's an ap
 ## The team
 
 ```
-                         Gavin (COO)
-                              │
-          ┌───────────────────┼──────────────────┬────────────┐
-          │                   │                  │            │
-         PM             Architect          Head of Design  Copywriter
-                              │                  │
-               ┌──────────────┼──────┐      ┌────┴────┐
-            Security         QA   DevOps    UX        UI
-
-                        Engineering
-                     ┌──────┴──────┐
-                  Backend       Frontend
+Gavin (COO)
+│
+├── PM
+├── Architect
+│   ├── Security
+│   ├── QA
+│   └── DevOps
+├── Head of Design
+│   ├── UX
+│   └── UI
+├── Backend
+├── Frontend
+└── Copywriter
 ```
-
-Gavin deals with PM, Architect, Head of Design, and Copywriter directly. Engineering (Backend and Frontend) reports to Gavin but is coordinated through the pipeline. QA, Security, and DevOps report to the Architect. UX and UI report to the Head of Design.
 
 ## The pipeline
 
 ```
-PM → Security (spec review) → Architect (TDD) → Head of Design → UX → UI
-                                                                        ↓
-                                             QA (write tests) → Backend + Frontend → QA (validate) → DevOps
-                                                      ↑
-                                                Copywriter (parallel — feeds strings + onboarding copy)
+1. PM         →  spec
+2. Security   →  spec review (auth, rate limits, cost)
+3. Architect  →  TDD
+4. Design     →  wireframes (UX) → visuals (UI)
+5. Copywriter →  strings  ┐
+6. QA         →  test suite┘ (parallel, before build)
+7. Backend    ┐
+   Frontend   ┘  implement to pass tests
+8. QA         →  validate
+9. DevOps     →  ship
 ```
 
 ## The agents
@@ -67,10 +71,10 @@ Produces user flows and wireframes from an approved spec. Defines the structural
 ### UI Designer _(reports to Head of Design)_
 Produces final visual designs from approved wireframes. Follows the platform conventions and design system established by the Head of Design. Delivers annotated designs ready for the Frontend builder.
 
-### Backend _(Engineering)_
+### Backend
 Implements the backend from the Architect's approved TDD and QA's test suite. Implements in order: storage → service → API layer. Implementation is complete when every test in the QA suite passes.
 
-### Frontend _(Engineering)_
+### Frontend
 Implements the frontend from the approved Design Spec, TDD, and QA test suite. Matches the Design Spec precisely — makes no design decisions. Handles all UI states and platform-specific behaviour. Never hardcodes strings.
 
 ### Copywriter
