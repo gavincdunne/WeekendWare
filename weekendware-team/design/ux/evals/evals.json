@@ -1,0 +1,21 @@
+{
+  "skill_name": "ux-designer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Brief from Head of Design: produce user flows and wireframes for the check-in system. The spec is linked below. Key design direction: the check-in must feel like a conversation with someone who cares — not a form. The UI surface must be visually and structurally distinct from the general chat screen. The text input is the primary element.",
+      "expected_output": "The UX Designer must read the spec and the brand document before designing. Screen inventory must include at minimum: CheckIn Prompt (default, text active), Submitted / loading state, Basil Reply, Network Error, Crisis Response (guardrail card), and the manual navigation entry point. Happy path flow must be traced from two entry points: (a) notification tap and (b) app open. Edge case flows must cover: empty submission (submit blocked — no separate error screen needed), same-day check-in already completed (prompt does not appear; user can reach check-in via manual nav), network error on submit (inline error with retry), crisis signal in response (guardrail card replaces normal Basil reply). Wireframes must be built in Figma using the Figma MCP — not described in text only. Frames must be named using the convention: [Feature] / [Screen] / [State] / WF (e.g. CheckIn / Prompt / Default / WF). Wireframes must be greyscale only — no colour, typography, or brand decisions. Wireframes must show the text input as the dominant, above-the-fold element — not buried under header chrome. The UX Designer must structurally define what makes this screen different from the general chat screen: is it a full-screen surface, a bottom sheet, a card overlaid on home? This is a structural UX decision the spec leaves open, and the UX Designer must make it and justify it. Must cite MD3 and HIG patterns for the presentation mode chosen. Must note iOS keyboard inset behavior explicitly in frame annotations. Must NOT specify colours, typefaces, elevation values, or any visual design decisions. Must provide a Figma file link with the handback. Must hand back to Head of Design — not present directly to Gavin.",
+      "files": [
+        "projects/basil/specs/spec-checkin-system-05252026.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Brief from Head of Design: produce user flows and wireframes for the onboarding flow. The spec is linked below. Key design direction: onboarding must feel like meeting Basil, not setting up an app. Map it as a conversation state machine — the states are turns in a conversation, not static screens.",
+      "expected_output": "The UX Designer must express the screen inventory as conversation states, not static screens. States include at minimum: Welcome / Basil intro, Name collection (Basil asks), T1D context collection (user shares), First check-in input (user types free text), Basil first reply, Completion / transition to home. Must also include the error/fallback state: AI unavailable during onboarding (what does the user see?). Wireframes must be built in Figma using the Figma MCP — not described in text only. Frames must be named using the convention: [Feature] / [Screen] / [State] / WF (e.g. Onboarding / Welcome / Default / WF). Wireframes must be greyscale only. The 'under 5 exchanges' acceptance criterion must be addressed explicitly — the UX doc should confirm the designed flow meets this constraint and show how the count was made. Must define Android back-gesture behavior during onboarding: either suppress back entirely or treat it as 'previous message in the conversation' — must choose one and cite the rationale. iOS keyboard inset behavior must be noted in frame annotations for all states where text input is present. The AI-unavailable fallback state must be a wireframe in Figma, not left as an open question. Must NOT specify copy, tone, or visual decisions. Must NOT leave the back-gesture question unresolved. Must provide a Figma file link with the handback. Must hand back to Head of Design for review.",
+      "files": [
+        "projects/basil/specs/spec-onboarding-05252026.md"
+      ]
+    }
+  ]
+}

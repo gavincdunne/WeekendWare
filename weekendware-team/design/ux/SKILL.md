@@ -22,15 +22,18 @@ design decisions. Those belong to the UI Designer.
 
 Each flow should be a step-by-step description: screen → action → screen → action → outcome.
 
-**Wireframes** — screen-by-screen structural layouts:
+**Wireframes** — built in Figma using the Figma MCP integration:
 - Every screen and every state (loading, empty, error, success)
 - Content hierarchy — what is primary, secondary, tertiary
 - Element placement — not visual design, but position and relative weight
 - Interaction notes — what is tappable, what navigates where, what triggers what
+- Greyscale only. No colour, no typography decisions, no brand elements.
+- Frame naming convention: `[Feature] / [Screen] / [State] / WF`
+  Example: `CheckIn / Prompt / Default / WF`
+- All wireframes live in Figma — not in text, not in local files.
 
-Wireframes are described in structured text. They are not visual files — that is the UI
-Designer's job in Figma. Be precise enough that the UI Designer can translate your wireframe
-directly into a visual design without making structural decisions.
+Be precise enough that the UI Designer can translate your wireframe directly into a visual
+design without making structural decisions.
 
 ## How to approach the work
 
@@ -49,10 +52,11 @@ directly into a visual design without making structural decisions.
 
 ## What you hand back to the Head of Design
 
-A UX document containing:
+A UX package containing:
 - The complete screen inventory
 - User flows for every meaningful path
-- Wireframes for every screen and state
+- Wireframes for every screen and state, built in Figma
+- A Figma file link for the Head of Design to review
 - A short list of UX decisions made and why
 - Any open questions that need the Head of Design or Gavin's input
 

@@ -1,0 +1,21 @@
+{
+  "skill_name": "devops",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The check-in system has passed QA. Design the CI/CD pipeline for the Basil app (KMP — Android and iOS) and the basil-chat-api (Rust/Axum).",
+      "expected_output": "Must read the project CLAUDE.md to understand the build systems (Gradle for KMP, Cargo for Rust) and the existing repo structure before designing anything. Must design three separate pipeline tracks: Android, iOS, and API — not one monolithic pipeline. Android pipeline: trigger on PR and merge to main; steps: Gradle build (debug + dev flavor), unit tests (./gradlew test), lint, on merge: assemble release AAB, sign with keystore from GitHub Actions secrets, distribute to Firebase App Distribution (internal) or Play Store internal track. iOS pipeline: trigger on PR and merge; steps: xcodebuild for KMP iOS target, unit tests, on merge: archive and export IPA, sign with certificates from secrets, distribute to TestFlight. API pipeline: trigger on PR and merge; steps: cargo build, cargo test, cargo clippy, on merge: build release binary, deploy to staging environment, smoke test (health check endpoint), on manual approval: promote to production. Must define environment strategy: dev (local), staging (auto-deploy from main), production (manual promotion after staging smoke test passes). Must define secrets management: no credentials in repo, all secrets via GitHub Actions secrets, keystore and signing certificates stored encrypted. Must flag HIPAA-adjacent requirements: no user_text or Basil reply content in build logs, Sentry DSN scoped to not capture request bodies, PHI scrubbing rules verified in pipeline. Must define rollback: API rollback is previous image/binary re-deploy; mobile rollback is previous build in distribution channel. Must NOT recommend deploying directly to production on merge — staging is mandatory.",
+      "files": [
+        "projects/basil/CLAUDE.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The check-in system has shipped to production. What monitoring should be in place on day one?",
+      "expected_output": "Must define monitoring for the API layer and the product health layer separately. API monitoring must include: error rate on POST /check-in (alert if >1% over 5-minute window), p50/p95/p99 latency on the check-in endpoint, Anthropic API call success rate and latency (separate from the endpoint latency — the external call is the dominant cost), guardrail trigger rate (alert on sudden spikes — a spike may indicate a prompt injection attempt or a model change). Product health monitoring must include: check-in completion rate (submissions / prompt views — this is the primary product health metric), same-day deduplication events (should be near-zero except for expected dismissal patterns), notification delivery rate (Android and iOS separately via Firebase/APNs). Compliance monitoring must include: verification that Sentry is scrubbing PHI (spot-check that check-in text is not appearing in error traces), alert if any log line contains the string 'user_text' or 'basil_reply' (these should never be logged). Must define on-call runbook for the check-in endpoint going down: what is the user impact, what is the fallback behaviour (spec says user is informed of the error and can retry — verify this is what they see), who gets paged, what is the resolution path. Must NOT recommend logging check-in response content for debugging — PHI cannot be in logs even for debugging purposes.",
+      "files": [
+        "projects/basil/specs/spec-checkin-system-05252026.md"
+      ]
+    }
+  ]
+}

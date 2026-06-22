@@ -1,0 +1,21 @@
+{
+  "skill_name": "qa",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The check-in system has been implemented by Backend and Frontend Builders. Write the test plan.",
+      "expected_output": "Must write a test plan before opening the app — test cases derived from the spec's acceptance criteria, not from exploring the UI. Test plan must map every acceptance criterion (AC1–AC14) to at least one test case with: test ID, description, steps to reproduce, expected result, platform(s), and pass/fail column. Must include explicit test cases for: (1) notification trigger and deep link to check-in screen, (2) app-open banner entry point, (3) manual nav entry, (4) free text submission (1 char, 500 chars, 1000 chars — all valid; 0 chars — blocked), (5) same-day deduplication — complete a check-in, re-open app, verify prompt does not reappear, (6) dismiss once → prompt resurfaces; dismiss twice → clears until next day, (7) network error on submit → retry flow, (8) crisis signal in user_text → MENTAL_HEALTH_CARD displayed, normal Basil reply NOT shown, (9) crisis signal in Basil reply (post-flight) → EMERGENCY_CARD displayed, (10) PHI storage — verify check-in text is NOT logged in plaintext in Sentry or device logs, (11) SQLDelight encryption at rest — verify check_ins table is encrypted. Must include platform-specific tests: Android POST_NOTIFICATIONS permission flow; iOS UNUserNotificationCenter permission request timing. Must include regression test for the existing chat flow — check-in must not break general assistant. Must give a clear ship/no-ship verdict template at the end of the plan. Must NOT approve a build where the crisis path is untested — this is P0.",
+      "files": [
+        "projects/basil/specs/spec-checkin-system-05252026.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "During testing, you found that the check-in prompt re-appears after being dismissed twice on the same day — when it should clear until the following day per the spec. Write the bug report.",
+      "expected_output": "Bug report must include: (1) Title — concise and specific: 'Check-in prompt reappears after two same-day dismissals (should clear until next day)', (2) Component: CheckIn — dismiss/deduplication logic, (3) Severity: P1 — defined behaviour is wrong per spec AC7, (4) Platforms affected (must specify — Android, iOS, or both), (5) Steps to reproduce — numbered, exact, reproducible: open app with no check-in completed / dismiss prompt / close app / reopen app same day / dismiss again / close app / reopen — prompt should not appear; actual: prompt reappears, (6) Expected behaviour — direct quote or paraphrase of spec AC7: 'If the user dismisses the prompt without completing it, it re-surfaces on the next app open within the same day (max once more), then clears until the following day', (7) Actual behaviour — prompt appears on third or subsequent same-day opens, (8) Suggested investigation area — same-day dismiss counter logic in CheckInViewModel or SQLDelight query, (9) Severity justification — this is P1 not P0 because the core happy path works; the deduplication edge case is wrong. Must NOT mark this as P2 or lower — wrong deduplication behaviour means users get repeatedly prompted after choosing not to engage, which directly conflicts with the product's 'earns the check-in, doesn't demand it' principle.",
+      "files": [
+        "projects/basil/specs/spec-checkin-system-05252026.md"
+      ]
+    }
+  ]
+}

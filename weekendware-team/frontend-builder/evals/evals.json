@@ -1,0 +1,21 @@
+{
+  "skill_name": "frontend-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The check-in system Design Spec and TDD are approved. Implement the check-in feature for KMP (Android + iOS).",
+      "expected_output": "Must read the project CLAUDE.md and the existing basil codebase before writing anything — must find the existing ChatViewModel, ChatScreen, and AssistantService patterns and follow them. Must implement CheckInViewModel in shared KMP code with all defined states: Idle, Loading, Success(basilReply), Error(NetworkError), GuardrailTriggered(cardType). ViewModel must accept coroutineScope parameter for testability (per spec AC13). Must implement CheckInScreen composable for all UI states defined in the Design Spec — every state in the wireframe must exist in the code. Must implement same-day deduplication using the check_ins SQLDelight table: query for today's check-in on screen entry, show same-day complete state if found. Must implement local notification scheduling via expect/actual interface (Android: WorkManager for daily non-exact trigger — NOT AlarmManager; iOS: UNUserNotificationCenter). Must handle platform keyboard behaviour: Android adjustResize equivalent, iOS safe area + keyboard insets. Must implement the check-in navigation entry point from main nav (spec AC8). Must use strings.xml for all UI text — no hardcoded strings in composables. Must write unit tests covering: successful submission, empty-submission guard, guardrail trigger path, same-day deduplication, network error state. Must NOT use AlarmManager for the Android notification trigger — WorkManager is the correct Android best practice for a daily non-exact trigger.",
+      "files": [
+        "projects/basil/specs/spec-checkin-system-05252026.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The onboarding Design Spec and TDD are approved. Implement the onboarding flow.",
+      "expected_output": "Must read the existing Basil app codebase to understand the current navigation setup, Supabase auth integration, and where onboarding sits in the app launch flow (between auth completion and home screen). Must implement the onboarding state machine as designed — states map to conversation turns, not static screens. Must persist onboarding state so the flow survives app restart and resumes where it left off (spec AC8). Must suppress Android back gesture during onboarding OR treat back as 'previous turn' — must not allow back to exit to auth or produce a broken navigation state. Must handle iOS keyboard safe area insets for all text input states. Must integrate with the live AI layer for the final check-in turn — must NOT use a scripted fallback as the primary path (spec AC6). Must implement the API-unavailable fallback state defined in the Design Spec. Must handle the guardrail path in the first check-in turn (spec AC7). Must persist the user's name from onboarding for use in subsequent conversations. Must NOT add a skip path or a 'do this later' option — the spec explicitly excludes this in v1. Must NOT show the onboarding flow again after completion, even after sign-out and sign-back-in.",
+      "files": [
+        "projects/basil/specs/spec-onboarding-05252026.md"
+      ]
+    }
+  ]
+}

@@ -15,17 +15,25 @@ Every feature starts with the PM agent. It interviews the founder, synthesises t
 ## The team
 
 ```
-                        Gavin (COO)
-                             │
-        ┌────────────────────┼────────────────────┐
-        │                    │                    │
-       PM               Head of Design        Architect
-                             │
-                    ┌────────┴────────┐
-                UX Designer     UI Designer
+                              Gavin (COO)
+                                   │
+         ┌──────────┬──────────────┼──────────────┬──────────┬────────────┐
+         │          │              │              │          │            │
+        PM      Architect    Head of Design   Backend   Frontend         QA      DevOps   Copywriter
+                                   │           Builder    Builder
+                          ┌────────┴────────┐
+                      UX Designer     UI Designer
 ```
 
-Gavin deals with PM, Head of Design, and Architect directly. UX and UI report to the Head of Design.
+Gavin deals with PM, Architect, Head of Design, Backend Builder, Frontend Builder, QA, DevOps, and Copywriter directly. UX and UI report to the Head of Design.
+
+## The pipeline
+
+```
+PM → Architect → Head of Design → UX → UI → Backend Builder → Frontend Builder → QA → DevOps
+                                                     ↑
+                                               Copywriter (parallel — feeds Design Spec + strings)
+```
 
 ## The agents
 
@@ -39,29 +47,71 @@ Takes an approved spec and produces a Technical Design Document (TDD) before any
 Gavin's single point of contact for all design. Manages UX and UI designers internally — Gavin never deals with them directly. Responsible for the WeekendWare brand document, which grows with every engagement and governs design decisions across all products and marketing.
 
 ### UX Designer _(reports to Head of Design)_
-Produces user flows and wireframes from an approved spec. Defines the structural skeleton of every screen and state before any visual design begins.
+Produces user flows and Figma wireframes from an approved spec. Defines the structural skeleton of every screen and state before any visual design begins. All wireframes are built in Figma — greyscale, structurally precise, no visual design decisions.
 
 ### UI Designer _(reports to Head of Design)_
 Produces final visual designs in Figma from approved wireframes and a TDD. Follows Material Design 3 and HIG conventions, works within the established design system, and delivers annotated Figma frames ready for the Frontend Builder.
+
+### Backend Builder
+Implements the backend from the Architect's approved TDD. Reads the project `CLAUDE.md` before writing a line of code. Implements in order: storage → service → API layer. Tests every code path. Never ships without QA sign-off.
+
+### Frontend Builder
+Implements the frontend from the approved Design Spec and TDD. Matches the Design Spec precisely — makes no design decisions. Handles all UI states, all platforms, and all platform-specific behaviour. Never hardcodes strings.
+
+### QA
+Tests every feature against the spec's acceptance criteria before anything ships. Writes test plans, executes manual and automated tests, files bug reports, and gives a clear ship/no-ship verdict. Safety features (guardrails, PHI handling) are always P0.
+
+### DevOps
+Designs and maintains CI/CD pipelines, deployment infrastructure, environment strategy, and monitoring. Nothing ships to production without a working pipeline and monitoring in place. Owns HIPAA-adjacent infrastructure posture for Basil.
+
+### Copywriter
+Writes all product copy — in-app strings, Basil's conversational responses, onboarding copy, error messages, and notification text. Reads the brand document before writing anything. Flags all crisis-adjacent copy for clinical review. Delivers named string entries, not documents.
 
 ## What's in this repo
 
 ```
 weekendware-team/
-├── pm-agent/
-│   ├── SKILL.md          ← PM agent instructions
-│   └── evals/
-│       └── evals.json    ← test cases for the PM skill
-├── architect-agent/
-│   ├── SKILL.md          ← Architect agent instructions
-│   └── evals/
-│       └── evals.json    ← test cases for the Architect skill
-├── design-agent/
-│   └── SKILL.md          ← Head of Design instructions
-├── ux-designer/
-│   └── SKILL.md          ← UX Designer instructions
-└── ui-designer/
-    └── SKILL.md          ← UI Designer instructions
+├── pm/
+│   ├── SKILL.md
+│   └── evals/evals.json
+├── architect/
+│   ├── SKILL.md
+│   └── evals/evals.json
+├── design/
+│   ├── lead/
+│   │   ├── SKILL.md
+│   │   └── evals/evals.json
+│   ├── ux/
+│   │   ├── SKILL.md
+│   │   └── evals/evals.json
+│   └── ui/
+│       ├── SKILL.md
+│       └── evals/evals.json
+├── backend-builder/
+│   ├── SKILL.md
+│   └── evals/evals.json
+├── frontend-builder/
+│   ├── SKILL.md
+│   └── evals/evals.json
+├── qa/
+│   ├── SKILL.md
+│   └── evals/evals.json
+├── devops/
+│   ├── SKILL.md
+│   └── evals/evals.json
+└── copywriter/
+    ├── SKILL.md
+    └── evals/evals.json
+
+projects/
+├── brand/
+│   └── brand-guidelines.md   ← WeekendWare brand document (grows with every project)
+└── basil/
+    ├── CLAUDE.md             ← internal project briefing
+    └── specs/
+        ├── spec-checkin-system-05252026.md
+        ├── spec-onboarding-05252026.md
+        └── spec-persistent-memory-05252026.md
 ```
 
 ## Using a skill

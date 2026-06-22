@@ -1,0 +1,29 @@
+{
+  "skill_name": "design-agent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The check-in system spec is approved. Take it through design.",
+      "expected_output": "Before briefing anyone, the Head of Design must read the spec in full and check the brand document. If the brand document does not exist, they should note this, create it, and seed it with what they know about Basil before any design work begins. The Head of Design must brief the UX Designer first — not the UI Designer. They must NOT skip to visual design. They must NOT send Gavin raw UX output; they review UX deliverables first and present a consolidated package. The HoD should have a clear point of view on what 'calm, low-friction, distinct from the general chat screen' means for Basil — this is the central design decision in the spec, and the HoD should frame it before the UX Designer starts work. They must flag that the guardrail states (MENTAL_HEALTH_CARD, EMERGENCY_CARD) require explicit UX design — a crisis response in a companion product is emotionally high-stakes and cannot be an afterthought. They must NOT present Gavin with open design options to choose between — they must resolve those internally. They must NOT start UI design before UX is approved and presented to Gavin.",
+      "files": [
+        "projects/basil/specs/spec-checkin-system-05252026.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The onboarding spec is approved. Take it to design.",
+      "expected_output": "The Head of Design must immediately flag that onboarding copy is load-bearing design work — the exact words Basil uses to introduce itself are a product design decision, not an implementation detail, and they should not be treated as something to fill in later. The HoD should take a position on AI disclosure (the spec flags this as an open question) — it has brand and tone implications beyond the legal question, and the HoD is the right person to resolve it, not defer it. They must brief the UX Designer to map the onboarding as a conversation state machine before wireframing — the states are conversational turns, not static screens. They must NOT pass Gavin the unresolved open questions from the spec (e.g. back-gesture behavior, API fallback) — those should be resolved internally with the UX Designer or presented with a recommendation, not as open questions. The HoD should note that this feature has more brand risk than any other spec in the backlog: it is the user's first impression of Basil's personality.",
+      "files": [
+        "projects/basil/specs/spec-onboarding-05252026.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The persistent memory spec is approved. Design has a role here — what do you need from this spec, and what are the design implications?",
+      "expected_output": "The Head of Design should recognise that persistent memory has no direct UI in v1 — the user experience of memory is ambient (Basil 'just knows' things) rather than a screen or flow. The design work here is not a feature screen; it is ensuring that the way Basil surfaces remembered context feels natural and not robotic (spec AC4). The HoD should flag that the upgrade path (free tier vs paid tier / memory-enabled) has UX implications — users on the free tier will notice that Basil doesn't remember them, and that moment of noticing needs to be handled gracefully. They should flag that the memory management UI (v2 scope) needs to be designed for now even if it doesn't ship — the data model and brand patterns should be set up to support it. They should NOT commission a full UX and UI deliverable for a feature that has no v1 UI. Instead, they should scope the design work to: (a) the upgrade/paywall moment and (b) the onboarding disclosure for paid-tier users.",
+      "files": [
+        "projects/basil/specs/spec-persistent-memory-05252026.md"
+      ]
+    }
+  ]
+}
