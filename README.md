@@ -38,15 +38,42 @@ weekendware-team/
 
 This repo tracks the team — the skill files and evals for each agent role. Project work, specs, and briefings live separately, scoped to each project.
 
+## The team
+
+```
+                        Gavin (COO)
+                             │
+        ┌────────────────────┼────────────────────┐
+        │                    │                    │
+       PM               Head of Design        Architect
+        │                    │                    │
+        │           ┌────────┴────────┐           │
+        │       UX Designer     UI Designer       │
+        │                                         │
+        └──────────────────┬──────────────────────┘
+                           │
+              ┌────────────┴────────────┐
+         Backend Builder       Frontend Builder
+                           │
+                           QA
+                           │
+                         DevOps
+                           │
+                       Copywriter
+```
+
+Gavin deals with PM, Head of Design, and Architect directly. Everything else is managed through those three.
+
 ## The pipeline
 
-Each agent is a gate. Nothing moves to the next stage without the previous one finishing.
+Each role is a gate. Nothing moves to the next stage without the previous one finishing.
 
-| Agent | Input | Output |
+| Role | Input | Output |
 |---|---|---|
 | PM | A raw idea from Gavin | Approved spec |
-| Architect | Approved spec | Technical Design Document (TDD) |
-| Design | Approved TDD | Screen-by-screen Design Spec |
+| Head of Design + UX | Approved spec | Approved wireframes |
+| Architect | Approved spec + wireframes | Technical Design Document (TDD) |
+| Head of Design + UI | Approved TDD + wireframes | Final designs in Figma |
 | Backend Builder | Approved TDD | Working API |
 | Frontend Builder | Approved Design Spec + TDD | Working UI |
 | QA | Acceptance criteria from spec | Test sign-off |
@@ -58,11 +85,17 @@ Each agent is a gate. Nothing moves to the next stage without the previous one f
 ### PM
 Takes a raw idea and turns it into a buildable spec. Runs a focused interview, confirms understanding, and produces a structured document covering: problem statement, user stories, acceptance criteria, out-of-scope items, dependencies, and risks.
 
+### Head of Design
+Gavin's single point of contact for all design. Manages UX and UI designers internally — Gavin never deals with them directly. Responsible for the WeekendWare brand document, which grows with every engagement and governs design decisions across all products and marketing.
+
+### UX Designer _(reports to Head of Design)_
+Produces user flows and wireframes from an approved spec. Defines the structural skeleton of every screen and state before any visual design begins.
+
+### UI Designer _(reports to Head of Design)_
+Produces final visual designs in Figma from approved wireframes and a TDD. Follows Material Design 3 and HIG conventions, works within the established design system, and delivers annotated Figma frames ready for the Frontend Builder.
+
 ### Architect
 Takes an approved spec and produces a Technical Design Document before any code is written. Researches platform best practices, reasons about data structures and algorithms (with Big O analysis), thinks about scale and scaffolding, and designs the full technical approach — data model, API contract, and component breakdown.
-
-### Design
-Takes an approved TDD and produces a screen-by-screen Design Spec before any frontend work begins. Inventories every screen and state (including empty, loading, and error states), follows platform design conventions (Material Design, HIG), and produces specs detailed enough for the Frontend Builder to implement without making visual or interaction decisions themselves.
 
 ## Using a skill
 
