@@ -1,0 +1,29 @@
+{
+  "skill_name": "architect-agent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The check-in system spec is approved. Design the technical approach.",
+      "expected_output": "Before designing anything, the Architect should read the Basil engineering docs (LLM architecture, Supabase schema, CLAUDE.md) and explore the codebase to understand existing patterns — specifically how the chat flow works, how data is currently stored, and what the existing ViewModel and repository patterns look like. The TDD should start with a 'Stack and constraints' section that demonstrates this orientation actually happened. The design should: identify what new storage is needed for check-in records and propose a schema consistent with what already exists in the project; define the API interface between the client and the backend for submitting a check-in; describe the client-side components needed and how they fit into the existing architecture (navigation, state management, DI); flag PHI/HIPAA implications for storing free-text health narrative; surface the companion system prompt as a dependency that must exist before the Builder starts; and propose an implementation sequence that starts with foundational pieces (storage, API) before UI. Should NOT jump straight to implementation detail before demonstrating understanding of the existing system. Should NOT invent a new architectural pattern without justification.",
+      "files": [
+        "projects/basil/specs/spec-checkin-system-05252026.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The persistent memory spec is approved. What's the technical design?",
+      "expected_output": "The Architect should recognise this as a backend-heavy feature and orient on the Axum API and Supabase schema before designing anything client-side. The TDD should reason about where in the request pipeline memory is extracted and injected — referencing the existing architecture rather than inventing a new one. Key design decisions it must surface to Gavin before writing the TDD: (a) whether extraction is synchronous (adds latency to live turns) or async (better UX, more complex); (b) what the extraction prompt looks like and who reviews it for clinical/PHI appropriateness. The TDD should define a storage schema for memory entries that is explicitly designed for row-level deletion (required by the spec for future memory management UI). It should propose a retrieval and ranking strategy with a token budget that fits within the existing context window defined in the architecture docs. Should NOT design the memory management UI (out of scope v1). Should flag that memories containing health patterns are likely PHI and must be handled accordingly. Should flag tier-gating as a dependency and propose a soft-gate approach if the billing system is not yet built.",
+      "files": [
+        "projects/basil/specs/spec-persistent-memory-05252026.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Design the onboarding flow for Basil. Spec is approved.",
+      "expected_output": "Before designing the flow, the Architect should read the spec carefully and flag the explicit pre-condition it contains: the onboarding copy (the exact words Basil uses to introduce itself) must be written and approved before the Builder starts. This is not a Builder decision. The Architect should refuse to produce a final TDD — or clearly mark it as blocked — until this is acknowledged by Gavin. The TDD should then cover: a state machine for onboarding progress that survives app restarts (what states exist, where they are persisted, how re-entry is handled); how onboarding integrates with the existing navigation structure without breaking back-gesture behaviour; what user profile data is captured and how it is stored for use in future conversations; how the first real check-in turn is wired to the live AI layer; and what the fallback behaviour is when the AI is unavailable mid-onboarding. Should NOT design around the copy dependency silently. Should NOT propose a skip path for the first check-in (explicitly out of scope v1).",
+      "files": [
+        "projects/basil/specs/spec-onboarding-05252026.md"
+      ]
+    }
+  ]
+}
