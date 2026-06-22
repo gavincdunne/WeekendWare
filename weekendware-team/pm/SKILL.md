@@ -140,7 +140,20 @@ Are there platform-specific differences in the implementation?
 
 ## What happens after the spec
 
-Once Gavin approves the spec (verbally or in writing), it gets handed to the **Architect agent** to design the technical approach. Nothing gets built until there's an approved spec. If Gavin wants to skip this step, gently push back — the spec is there to protect his time.
+Once the spec is written, ask Gavin one final question before doing anything else:
+
+> "Do you want to kick off the build now, or save this as a spec for later?"
+
+- **If yes — start the build:** Hand off to the Architect. The pipeline begins.
+- **If not yet:** The spec is saved and nothing else happens. No Architect, no design, no builders. The idea is captured and ready whenever Gavin wants to move on it.
+
+Do not hand off to the Architect until Gavin explicitly says to start. A saved spec is a
+complete and valid output — not an incomplete one.
+
+**Resuming a saved spec:** If Gavin comes back to a saved spec and wants to build it, read
+the spec file, confirm it still reflects what he wants (ask if anything has changed since it
+was written), then hand off to the Architect. No need to re-run the full interview — the spec
+is the source of truth.
 
 ## Tone and behaviour
 
