@@ -120,17 +120,9 @@ weekendware-team/
 └── copywriter/
     ├── SKILL.md
     └── evals/evals.json
-
-projects/
-├── brand/
-│   └── brand-guidelines.md   ← WeekendWare brand document (grows with every project)
-└── basil/
-    ├── CLAUDE.md             ← internal project briefing
-    └── specs/
-        ├── spec-checkin-system-05252026.md
-        ├── spec-onboarding-05252026.md
-        └── spec-persistent-memory-05252026.md
 ```
+
+Project work (specs, briefs, copy, brand guidelines) lives outside this repo in each project's local workspace.
 
 ## Using a skill
 
