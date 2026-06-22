@@ -28,33 +28,41 @@ weekendware-team/
 │   ├── SKILL.md          ← PM agent instructions
 │   └── evals/
 │       └── evals.json    ← test cases for the PM skill
-└── architect-agent/
-    └── SKILL.md          ← Architect agent instructions
+├── architect-agent/
+│   ├── SKILL.md          ← Architect agent instructions
+│   └── evals/
+│       └── evals.json    ← test cases for the Architect skill
+└── design-agent/
+    └── SKILL.md          ← Design agent instructions
 ```
 
 This repo tracks the team — the skill files and evals for each agent role. Project work, specs, and briefings live separately, scoped to each project.
 
-## The PM agent
+## The pipeline
 
-The PM agent takes a raw idea and turns it into a buildable spec. It:
+Each agent is a gate. Nothing moves to the next stage without the previous one finishing.
 
-1. Reads the project context before asking a single question
-2. Runs a focused interview — 2–3 questions at a time, not a form
-3. Confirms its understanding before writing anything
-4. Produces a structured spec: problem statement, user stories, acceptance criteria, out-of-scope items, dependencies, risks
+| Agent | Input | Output |
+|---|---|---|
+| PM | A raw idea from Gavin | Approved spec |
+| Architect | Approved spec | Technical Design Document (TDD) |
+| Design | Approved TDD | Screen-by-screen Design Spec |
+| Backend Builder | Approved TDD | Working API |
+| Frontend Builder | Approved Design Spec + TDD | Working UI |
+| QA | Acceptance criteria from spec | Test sign-off |
+| DevOps | Working build | Deployed product |
+| Copywriter | Product screens + brand context | Final copy and content |
 
-The evals in `pm-agent/evals/evals.json` define what good output looks like for real scenarios. They're used to test whether the skill is behaving correctly before it touches live product work.
+## The agents
 
-## The Architect agent
+### PM
+Takes a raw idea and turns it into a buildable spec. Runs a focused interview, confirms understanding, and produces a structured document covering: problem statement, user stories, acceptance criteria, out-of-scope items, dependencies, and risks.
 
-The Architect agent takes an approved spec and produces a Technical Design Document (TDD) before any code is written. It:
+### Architect
+Takes an approved spec and produces a Technical Design Document before any code is written. Researches platform best practices, reasons about data structures and algorithms (with Big O analysis), thinks about scale and scaffolding, and designs the full technical approach — data model, API contract, and component breakdown.
 
-1. Reads all project engineering docs and the existing codebase
-2. Interrogates the spec for gaps, conflicts, and open decisions
-3. Confirms blocking decisions with Gavin before designing
-4. Produces a TDD covering: data model, API design, client architecture, implementation sequence, and test strategy
-
-No implementation begins until there is an approved TDD.
+### Design
+Takes an approved TDD and produces a screen-by-screen Design Spec before any frontend work begins. Inventories every screen and state (including empty, loading, and error states), follows platform design conventions (Material Design, HIG), and produces specs detailed enough for the Frontend Builder to implement without making visual or interaction decisions themselves.
 
 ## Using a skill
 
