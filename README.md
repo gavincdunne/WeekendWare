@@ -24,10 +24,12 @@ Every feature starts with the PM agent. It interviews the founder, synthesises t
 
 ```
 weekendware-team/
-└── pm-agent/
-    ├── SKILL.md          ← PM agent instructions
-    └── evals/
-        └── evals.json    ← test cases for the PM skill
+├── pm-agent/
+│   ├── SKILL.md          ← PM agent instructions
+│   └── evals/
+│       └── evals.json    ← test cases for the PM skill
+└── architect-agent/
+    └── SKILL.md          ← Architect agent instructions
 ```
 
 This repo tracks the team — the skill files and evals for each agent role. Project work, specs, and briefings live separately, scoped to each project.
@@ -43,9 +45,20 @@ The PM agent takes a raw idea and turns it into a buildable spec. It:
 
 The evals in `pm-agent/evals/evals.json` define what good output looks like for real scenarios. They're used to test whether the skill is behaving correctly before it touches live product work.
 
+## The Architect agent
+
+The Architect agent takes an approved spec and produces a Technical Design Document (TDD) before any code is written. It:
+
+1. Reads all project engineering docs and the existing codebase
+2. Interrogates the spec for gaps, conflicts, and open decisions
+3. Confirms blocking decisions with Gavin before designing
+4. Produces a TDD covering: data model, API design, client architecture, implementation sequence, and test strategy
+
+No implementation begins until there is an approved TDD.
+
 ## Using a skill
 
-Skills are written for [Claude Code](https://claude.ai/code). To use the PM agent on your own project, copy `SKILL.md` into your working directory and invoke it via `/pm-agent` (or reference it in your Claude Code session).
+Skills are written for [Claude Code](https://claude.ai/code). To use an agent skill on your own project, copy the relevant `SKILL.md` into your working directory and invoke it by name in your Claude Code session.
 
 ---
 
