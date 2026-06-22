@@ -50,7 +50,7 @@ Gavin's single point of contact for all design. Manages UX and UI designers inte
 Produces user flows and Figma wireframes from an approved spec. Defines the structural skeleton of every screen and state before any visual design begins. All wireframes are built in Figma — greyscale, structurally precise, no visual design decisions.
 
 ### UI Designer _(reports to Head of Design)_
-Produces final visual designs in Figma from approved wireframes and a TDD. Follows Material Design 3 and HIG conventions, works within the established design system, and delivers annotated Figma frames ready for the Frontend Builder.
+Produces final visual designs in Figma from approved wireframes and a TDD. Works within the platform conventions and design system established by the Head of Design, and delivers annotated Figma frames ready for the Frontend Builder.
 
 ### Backend Builder
 Implements the backend from the Architect's approved TDD. Reads the project `CLAUDE.md` before writing a line of code. Implements in order: storage → service → API layer. Tests every code path. Never ships without QA sign-off.

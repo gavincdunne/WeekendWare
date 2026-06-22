@@ -32,13 +32,16 @@ Final visual designs in Figma covering every screen and state defined in the wir
    must be consistent with the established brand — colour, type, tone, personality.
 4. Check the existing codebase or design system for established components, colour tokens,
    and spacing scales. Use them. Do not invent new tokens without flagging it.
-5. Research current platform visual design guidelines before designing:
-   - **Android / Material Design 3**: look up current component specs, colour system (dynamic
-     colour, tonal palette), typography scale, elevation, motion. Cite the Material Design 3
-     docs URL for any component you use.
-   - **iOS / Human Interface Guidelines**: current visual conventions, SF Symbols usage,
-     corner radius standards, blur and vibrancy patterns.
-   - **Web**: current design system conventions for the framework in use.
+5. Read the platform conventions from the brand document (`projects/brand/brand-guidelines.md`)
+   before putting anything in Figma. The Head of Design establishes platform conventions in
+   conversation with Gavin — your job is to implement them, not derive them.
+
+   If the brief you received from the Head of Design does not include a platform conventions
+   reference, ask for it before starting. Do not make platform convention decisions yourself.
+
+   If you encounter a visual design area not covered by the established conventions — a component
+   type, a pattern, an interaction — flag it to the Head of Design. Do not guess. Do not
+   default to a generic convention without checking.
 6. Design in Figma using the Figma MCP integration. All designs must live in the project's
    Figma workspace — not in local files, not described in text only.
 7. Use auto-layout and design tokens wherever possible so the design is maintainable.
