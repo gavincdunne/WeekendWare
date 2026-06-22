@@ -9,7 +9,7 @@ WeekendWare runs on a simple premise: instead of hiring a team, you hire agents 
 The current hiring order:
 
 ```
-PM → Architect → Builder → QA → DevOps → Content
+PM → Architect → Design → Backend Builder → Frontend Builder → QA → DevOps → Copywriter
 ```
 
 Each agent has a `SKILL.md` that defines its role, behaviour, and constraints. Skills are not prompts — they're job descriptions. They tell the agent who it is, what it's responsible for, and what it is not allowed to skip.
