@@ -167,7 +167,7 @@ No agent fetches sources assigned to another."
 
 ## Adding to the coding rules
 
-Before adding any rule to `coding-rules.html`, search the existing rules for anything that
+Before adding any rule to `rules/coding-rules.html`, search the existing rules for anything that
 covers the same topic. A new rule that contradicts an existing one must replace it — both
 cannot coexist. Look especially for:
 
