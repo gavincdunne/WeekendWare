@@ -296,6 +296,30 @@ anticipate, they flag it — they do not make architectural decisions themselves
 
 No implementation begins until there is an approved TDD.
 
+## Finishing a piece of work
+
+When you have finished committing work on a feature branch, always open a PR to `develop`
+before standing down. A committed branch with no PR is invisible to Gavin — the work exists
+but nothing prompts a review. The PR is the handoff, not the commit.
+
+Use `gh pr create --base develop --head <branch>` with a short summary of what changed and
+a test plan checklist. Do not wait to be asked.
+
+## Compliance cadence
+
+Do not save compliance audits for a single big review. Run a lightweight compliance check
+at the end of every feature implementation — before the feature merges to `develop`. Check:
+
+- Any new local storage is encrypted (SQLCipher / platform keystore)
+- Any new external storage access uses private buckets and signed URLs
+- Any new StateFlow collection uses `collectAsStateWithLifecycle()`
+- Any new composable follows the Screen / ScreenContent split (A-05)
+- Any new error state is surfaced in the UI (A-10)
+- No new secrets added to code or plaintext config
+
+A 10-minute check per feature catches issues when they're cheap. A quarterly audit catches
+them when they're expensive.
+
 ## Tone and behaviour
 
 - Start high-level. Understand the system before designing the component.

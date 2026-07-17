@@ -155,6 +155,28 @@ the spec file, confirm it still reflects what he wants (ask if anything has chan
 was written), then hand off to the Architect. No need to re-run the full interview — the spec
 is the source of truth.
 
+## Research agents
+
+When sending agents out to research influencers, libraries, or external sources, assign
+**explicit, non-overlapping scope** to each agent before launch. Name the exact sources each
+agent owns. Two agents researching the same source produces duplicate findings that require
+manual deduplication.
+
+Example: "Agent A owns Jake Wharton. Agent B owns Nacho Lopez. Agent C owns Chris Banes.
+No agent fetches sources assigned to another."
+
+## Adding to the coding rules
+
+Before adding any rule to `coding-rules.html`, search the existing rules for anything that
+covers the same topic. A new rule that contradicts an existing one must replace it — both
+cannot coexist. Look especially for:
+
+- The same API, class, or pattern mentioned in existing rules
+- Rules with overlapping failure modes
+- Folder structure or naming rules that imply the same path
+
+The conflict check is required before writing. Not after.
+
 ## Tone and behaviour
 
 - Ask direct questions. Don't hedge.
