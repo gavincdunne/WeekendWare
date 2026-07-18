@@ -8,15 +8,15 @@ Universal standards that apply to every WeekendWare project. Read this file firs
 
 These must pass before any real user traffic reaches the app.
 
-| ID | Rule |
-|----|------|
-| S-05 | API key server-side only |
-| S-06 | No credentials, tokens, or user IDs in any log output |
-| S-07 | Session timeout after inactivity |
-| S-08 | HTTPS enforced on staging and prod |
-| S-12 | Every API request authenticated — no anonymous endpoints |
-| S-13 | Server-side rate limiting |
-| S-14 | No request bodies logged on the server |
+| Rule |
+|------|
+| API keys stay on the server — never in the binary or client config |
+| No credentials, tokens, or user IDs in any log output |
+| Session timeout after inactivity — 15 minutes, configurable |
+| HTTPS enforced on staging and prod — no plaintext traffic |
+| Every request to the API authenticated — no anonymous endpoints |
+| Server-side rate limiting — independent of client UX |
+| No request bodies logged on the server |
 
 ---
 
@@ -24,18 +24,18 @@ These must pass before any real user traffic reaches the app.
 
 All eight rules are universal — they apply to every WeekendWare repo.
 
-| ID | Rule |
-|----|------|
-| G-01 | Three long-lived branches only: `main`, `staging`, `develop` |
-| G-02 | Feature branches cut from `develop` only |
-| G-03 | Branch naming: `MMDDYYYY-description` |
-| G-04 | PRs always target `develop` — pass `--base develop` explicitly |
-| G-05 | No direct commits to `main` or `staging` |
-| G-06 | No AI attribution or co-author lines in commit messages |
-| G-07 | Update `README.md` before pushing to GitHub |
-| G-08 | Every project repo follows identical branching and commit standards |
+| Rule |
+|------|
+| Three long-lived branches only: `main`, `staging`, `develop` |
+| Feature branches cut from `develop` only |
+| Branch naming: `MMDDYYYY-description` |
+| PRs always target `develop` — pass `--base develop` explicitly |
+| No direct commits to `main` or `staging` |
+| No AI attribution or co-author lines in commit messages |
+| Update `README.md` before pushing to GitHub |
+| Every project repo follows identical branching and commit standards |
 
-### G-01 · Three long-lived branches only: `main`, `staging`, `develop`
+### Three long-lived branches only: `main`, `staging`, `develop`
 
 `main` is production. `staging` is pre-release. `develop` is active development. Feature branches are cut from `develop`, named `MMDDYYYY-description`, and merged back to `develop` via PR. No other long-lived branches.
 
@@ -45,7 +45,7 @@ All eight rules are universal — they apply to every WeekendWare repo.
 
 ---
 
-### G-02 · Feature branches cut from `develop` — never from `main` or `staging`
+### Feature branches cut from `develop` — never from `main` or `staging`
 
 > **Why:** `develop` is always ahead of `main`. A branch cut from `main` is missing everything that has shipped to develop since the last release.
 
@@ -53,7 +53,7 @@ All eight rules are universal — they apply to every WeekendWare repo.
 
 ---
 
-### G-03 · Branch naming: `MMDDYYYY-description`
+### Branch naming: `MMDDYYYY-description`
 
 Date-first naming makes branches sort chronologically. Description is kebab-case and concise.
 
@@ -66,7 +66,7 @@ Date-first naming makes branches sort chronologically. Description is kebab-case
 
 ---
 
-### G-04 · PRs always target `develop` — pass `--base develop` explicitly
+### PRs always target `develop` — pass `--base develop` explicitly
 
 ```sh
 gh pr create --base develop --title "..." --body "..."
@@ -78,7 +78,7 @@ gh pr create --base develop --title "..." --body "..."
 
 ---
 
-### G-05 · No direct commits to `main` or `staging`
+### No direct commits to `main` or `staging`
 
 `main` only merges from `staging` at release time. `staging` only merges from `develop`. Direct commits bypass all CI checks and review.
 
@@ -86,13 +86,13 @@ gh pr create --base develop --title "..." --body "..."
 
 ---
 
-### G-06 · No AI attribution or co-author lines in commit messages
+### No AI attribution or co-author lines in commit messages
 
 Commit history is a professional artefact. Co-author lines for AI tools add noise and don't represent authorship in any legally or professionally meaningful sense.
 
 ---
 
-### G-07 · Update `README.md` before pushing to GitHub
+### Update `README.md` before pushing to GitHub
 
 The README is the public face of the repo. New agent hired? New folder? Rule changed? Update it. The README must always match what is actually in the repo.
 
@@ -100,7 +100,7 @@ The README is the public face of the repo. New agent hired? New folder? Rule cha
 
 ---
 
-### G-08 · Every project repo follows identical branching and commit standards
+### Every project repo follows identical branching and commit standards
 
 Same three-branch structure, same naming convention, same PR-to-develop workflow — whether it's a KMP app, a Rust API, or a future web project. No repo gets a special exception.
 
@@ -110,18 +110,18 @@ Same three-branch structure, same naming convention, same PR-to-develop workflow
 
 Universal rules apply to any layered project on any platform.
 
-| ID | Rule |
-|----|------|
-| A-01 | Repository interface in DI, never the concrete class |
-| A-02 | Build order: storage → service → API layer |
-| A-03 | `Result<T>` across layer boundaries — no thrown exceptions |
-| A-08 | Design artefact before code — no screen ships without an approved design |
-| A-09 | Design tokens before components — no hardcoded values in UI code |
-| A-10 | Empty states and error states are designed — first-class screens |
-| A-19 | All UI meets WCAG AA contrast — 3:1 for components and icons, 4.5:1 for body text |
-| A-20 | All code documented using the platform-appropriate documentation library |
+| Rule |
+|------|
+| Repository interface in DI, never the concrete class |
+| Build order: storage → service → API layer |
+| `Result<T>` across layer boundaries — no thrown exceptions |
+| Design artefact before code — no screen ships without an approved design |
+| Design tokens before components — no hardcoded values in UI code |
+| Empty states and error states are designed — first-class screens |
+| All UI meets WCAG AA contrast — 3:1 for components and icons, 4.5:1 for body text |
+| All code documented using the platform-appropriate documentation library |
 
-### A-01 · Repository interface in DI, never the concrete class
+### Repository interface in DI, never the concrete class
 
 Bind and inject the interface. Never import the concrete implementation directly in a ViewModel or use case.
 
@@ -133,7 +133,7 @@ Bind and inject the interface. Never import the concrete implementation directly
 
 ---
 
-### A-02 · Build order: storage → service → API layer
+### Build order: storage → service → API layer
 
 Write the schema first, then service logic, then API handlers.
 
@@ -145,7 +145,7 @@ Write the schema first, then service logic, then API handlers.
 
 ---
 
-### A-03 · `Result<T>` across layer boundaries — no thrown exceptions
+### `Result<T>` across layer boundaries — no thrown exceptions
 
 Repositories return `Result<T>`. Use cases propagate it. ViewModels map it to UI state. Never throw across a layer boundary.
 
@@ -157,7 +157,7 @@ Repositories return `Result<T>`. Use cases propagate it. ViewModels map it to UI
 
 ---
 
-### A-08 · Design artefact before code — no screen ships without an approved design
+### Design artefact before code — no screen ships without an approved design
 
 A Figma file, HTML mockup, or written design spec anchors every target platform to the same visual contract before any implementation begins.
 
@@ -169,7 +169,7 @@ A Figma file, HTML mockup, or written design spec anchors every target platform 
 
 ---
 
-### A-09 · Design tokens before components — no hardcoded values in UI code
+### Design tokens before components — no hardcoded values in UI code
 
 All colours, spacing, and typography reference tokens from the design system. Never hardcode `Color(0xFF546857)` or `16.dp` inline.
 
@@ -181,7 +181,7 @@ All colours, spacing, and typography reference tokens from the design system. Ne
 
 ---
 
-### A-10 · Empty states and error states are designed — first-class screens
+### Empty states and error states are designed — first-class screens
 
 Every screen that can be empty or fail must have an explicit empty state and error state defined in the design and implemented in code.
 
@@ -193,7 +193,7 @@ Every screen that can be empty or fail must have an explicit empty state and err
 
 ---
 
-### A-19 · All UI meets WCAG AA contrast — 3:1 for components and icons, 4.5:1 for body text
+### All UI meets WCAG AA contrast — 3:1 for components and icons, 4.5:1 for body text
 
 Every colour token must be verified at the time it's chosen. Document the contrast ratio alongside the token value in code and design.
 
@@ -208,7 +208,7 @@ Every colour token must be verified at the time it's chosen. Document the contra
 
 ---
 
-### A-20 · All code documented using the platform-appropriate documentation library
+### All code documented using the platform-appropriate documentation library
 
 Every public class, function, method, property, and interface must have a documentation comment using the correct tool for the language. Use structured tags — don't freeform comment when a tag exists.
 
@@ -229,14 +229,14 @@ Every public class, function, method, property, and interface must have a docume
 
 Universal build rules. Platform-specific rules (Gradle, Xcode, etc.) live in the platform rules file.
 
-| ID | Rule |
-|----|------|
-| B-04 | CI job order: tests pass first, platform builds run in parallel after |
-| B-06 | PR check = lint + fast tests. Merge to `develop` = full platform matrix. |
-| B-07 | `secrets.sample.properties` committed — actual keys file is not |
-| B-10 | CI never builds `prod` flavor from a feature branch |
+| Rule |
+|------|
+| CI job order: tests pass first, platform builds run in parallel after |
+| PR check = lint + fast tests. Merge to `develop` = full platform matrix. |
+| `secrets.sample.properties` committed — actual keys file is not |
+| CI never builds `prod` flavor from a feature branch |
 
-### B-04 · CI job order: tests pass first, platform builds run in parallel after
+### CI job order: tests pass first, platform builds run in parallel after
 
 ```yaml
 job: test           # ubuntu, fast
@@ -250,13 +250,13 @@ job: build-ios      # macos-14, needs: test
 
 ---
 
-### B-06 · PR check = lint + fast tests. Merge to `develop` = full platform matrix.
+### PR check = lint + fast tests. Merge to `develop` = full platform matrix.
 
 Lightweight PR feedback stays fast. Full build matrix on merge prevents platform-breaking changes from reaching `develop`.
 
 ---
 
-### B-07 · `secrets.sample.properties` committed — actual keys file is not
+### `secrets.sample.properties` committed — actual keys file is not
 
 Documents every key name without values. New developers copy it. The actual secrets file is in `.gitignore`.
 
@@ -264,7 +264,7 @@ Documents every key name without values. New developers copy it. The actual secr
 
 ---
 
-### B-10 · CI never builds `prod` flavor from a feature branch
+### CI never builds `prod` flavor from a feature branch
 
 Only `develop → staging` and `main → prod`. Tag-triggered workflows gate production releases.
 
@@ -276,12 +276,12 @@ Only `develop → staging` and `main → prod`. Tag-triggered workflows gate pro
 
 Universal testing rules. Platform-specific testing rules live in the platform rules file.
 
-| ID | Rule |
-|----|------|
-| QA-02 | Fakes before mocks — mocking frameworks must not go in shared test sources |
-| QA-06 | Every ViewModel state transition has a test — loading, success, error, empty minimum |
+| Rule |
+|------|
+| Fakes before mocks — mocking frameworks must not go in shared test sources |
+| Every ViewModel state transition has a test — loading, success, error, empty minimum |
 
-### QA-02 · Fakes before mocks
+### Fakes before mocks
 
 Android docs (March 2026): *"First, use a fake. If not possible, mock. Do not install a mocking framework unless clearly necessary."*
 
@@ -293,7 +293,7 @@ MockK and Mockito are JVM-only — they cannot be added to shared or cross-platf
 
 ---
 
-### QA-06 · Every ViewModel state transition has a test — loading, success, error, empty minimum
+### Every ViewModel state transition has a test — loading, success, error, empty minimum
 
 If a state has a `@Preview`, it has a test. Error and empty states are exactly the states that break in production.
 
@@ -308,18 +308,18 @@ If a state has a `@Preview`, it has a test. Error and empty states are exactly t
 > [!CAUTION]
 > Rules marked **Blocker** must pass before any real user traffic reaches the app.
 
-| ID | Rule | Level |
-|----|------|-------|
-| S-05 | API keys stay on the server — never in the binary or client config | **Blocker** |
-| S-06 | No credentials, tokens, or user IDs in any log output | **Blocker** |
-| S-07 | Session timeout after inactivity — 15 minutes, configurable | **Blocker** |
-| S-08 | HTTPS enforced on staging and prod — no plaintext traffic | **Blocker** |
-| S-12 | Every request to the API authenticated — no anonymous endpoints | **Blocker** |
-| S-13 | Server-side rate limiting — independent of client UX | **Blocker** |
-| S-14 | No request bodies logged on the server | **Blocker** |
-| S-16 | Security reviews any new third-party SDK before it ships | Ongoing |
+| Rule | Level |
+|------|-------|
+| API keys stay on the server — never in the binary or client config | **Blocker** |
+| No credentials, tokens, or user IDs in any log output | **Blocker** |
+| Session timeout after inactivity — 15 minutes, configurable | **Blocker** |
+| HTTPS enforced on staging and prod — no plaintext traffic | **Blocker** |
+| Every request to the API authenticated — no anonymous endpoints | **Blocker** |
+| Server-side rate limiting — independent of client UX | **Blocker** |
+| No request bodies logged on the server | **Blocker** |
+| Security reviews any new third-party SDK before it ships | Ongoing |
 
-### S-05 · API keys stay on the server — never in the binary or client config `BLOCKER`
+### API keys stay on the server — never in the binary or client config `BLOCKER`
 
 The server holds all API keys. The mobile client authenticates with a JWT. The client never sees the underlying service key.
 
@@ -327,7 +327,7 @@ The server holds all API keys. The mobile client authenticates with a JWT. The c
 
 ---
 
-### S-06 · No credentials, tokens, or user IDs in any log output `BLOCKER`
+### No credentials, tokens, or user IDs in any log output `BLOCKER`
 
 Applies to `Log.d()`, `println()`, `tracing::info!()`, and any other logging call. The same rule applies to every platform and every layer of the stack.
 
@@ -335,7 +335,7 @@ Applies to `Log.d()`, `println()`, `tracing::info!()`, and any other logging cal
 
 ---
 
-### S-07 · Session timeout after inactivity — 15 minutes, configurable `BLOCKER`
+### Session timeout after inactivity — 15 minutes, configurable `BLOCKER`
 
 HIPAA guidance: automatic session termination after inactivity. Applies to any authenticated app — not just health products.
 
@@ -343,7 +343,7 @@ HIPAA guidance: automatic session termination after inactivity. Applies to any a
 
 ---
 
-### S-08 · HTTPS enforced on staging and prod — no plaintext traffic `BLOCKER`
+### HTTPS enforced on staging and prod — no plaintext traffic `BLOCKER`
 
 OWASP: certificate pinning is *not recommended* in 2025 — rely on default PKI trust stores + HSTS. But TLS itself is non-negotiable on staging and prod.
 
@@ -351,7 +351,7 @@ OWASP: certificate pinning is *not recommended* in 2025 — rely on default PKI 
 
 ---
 
-### S-12 · Every request to the API authenticated — no anonymous endpoints `BLOCKER`
+### Every request to the API authenticated — no anonymous endpoints `BLOCKER`
 
 An unauthenticated endpoint proxying to an AI API is a direct cost vector.
 
@@ -359,19 +359,19 @@ An unauthenticated endpoint proxying to an AI API is a direct cost vector.
 
 ---
 
-### S-13 · Server-side rate limiting — independent of client UX `BLOCKER`
+### Server-side rate limiting — independent of client UX `BLOCKER`
 
 Client-side rate limiting (disabling a button) is UX, not security. The API enforces per-user limits regardless of what the client does.
 
 ---
 
-### S-14 · No request bodies logged on the server `BLOCKER`
+### No request bodies logged on the server `BLOCKER`
 
 Conversation content and user data must never land in server logs. `tracing::info!("{:?}", request_body)` on the server is just as dangerous as logging on the client.
 
 ---
 
-### S-16 · Security reviews any new third-party SDK before it ships
+### Security reviews any new third-party SDK before it ships
 
 Analytics, A/B testing, and monetisation SDKs must be audited for data access or transmission before being added. This is how sensitive user data ends up in ad networks.
 

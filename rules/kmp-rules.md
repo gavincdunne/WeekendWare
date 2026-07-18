@@ -6,17 +6,17 @@ Rules for any Kotlin Multiplatform project. Read [`weekendware-rules.md`](weeken
 
 ## Folder Structure
 
-| ID | Rule |
-|----|------|
-| FS-01 | Layer-based package structure in `commonMain` |
-| FS-02 | Platform source sets mirror `commonMain` package paths for `expect`/`actual` |
-| FS-03 | Platform source sets are thin — `expect`/`actual` and platform DI only |
-| FS-04 | Drawables and fonts in `commonMain/composeResources/` — strings via single-source tool |
-| FS-05 | SQLDelight `.sq` files follow the package path under `commonMain/sqldelight/` |
-| FS-06 | Test structure mirrors source structure |
-| FS-07 | Stay single-module until ~10 features — extract `core/` first, then feature modules |
+| Rule |
+|------|
+| Layer-based package structure in `commonMain` |
+| Platform source sets mirror `commonMain` package paths for `expect`/`actual` |
+| Platform source sets are thin — `expect`/`actual` and platform DI only |
+| Drawables and fonts in `commonMain/composeResources/` — strings via single-source tool |
+| SQLDelight `.sq` files follow the package path under `commonMain/sqldelight/` |
+| Test structure mirrors source structure |
+| Stay single-module until ~10 features — extract `core/` first, then feature modules |
 
-### FS-01 · Layer-based package structure in `commonMain`
+### Layer-based package structure in `commonMain`
 
 ```
 commonMain/kotlin/org/weekendware/<project>/
@@ -42,7 +42,7 @@ commonMain/kotlin/org/weekendware/<project>/
 
 ---
 
-### FS-02 · Platform source sets mirror `commonMain` package paths for `expect`/`actual`
+### Platform source sets mirror `commonMain` package paths for `expect`/`actual`
 
 ```
 commonMain/.../data/local/database/DatabaseDriverFactory.kt   ← expect
@@ -57,7 +57,7 @@ desktopMain/.../data/local/database/DatabaseDriverFactory.kt  ← actual
 
 ---
 
-### FS-03 · Platform source sets are thin — `expect`/`actual` and platform DI only
+### Platform source sets are thin — `expect`/`actual` and platform DI only
 
 Business logic belongs in `commonMain`. Platform source sets contain only `expect`/`actual` implementations and platform-specific DI bindings.
 
@@ -71,7 +71,7 @@ androidMain/
 
 ---
 
-### FS-04 · Drawables and fonts in `commonMain/composeResources/` — strings via single-source tool
+### Drawables and fonts in `commonMain/composeResources/` — strings via single-source tool
 
 ```
 commonMain/composeResources/
@@ -79,15 +79,15 @@ commonMain/composeResources/
 └── font/       ← font files
 ```
 
-Compose Multiplatform's resource system generates type-safe accessors from `composeResources/`. Strings are managed via a generator tool (see CB-02) to maintain a single source of truth rather than manually syncing platform-specific files.
+Compose Multiplatform's resource system generates type-safe accessors from `composeResources/`. Strings are managed via a generator tool — see "Use a single-source string tool" in the Community section — to maintain a single source of truth rather than manually syncing platform-specific files.
 
 > **Failure mode:** A font or SVG placed in `androidMain/res/` compiles on Android. iOS and Desktop builds have no access to it and either crash or render nothing.
 
-*Source: JetBrains Compose Multiplatform resources docs. For strings, see CB-02.*
+*Source: JetBrains Compose Multiplatform resources docs. For strings, see "Use a single-source string tool" in the Community section.*
 
 ---
 
-### FS-05 · SQLDelight `.sq` files follow the package path under `commonMain/sqldelight/`
+### SQLDelight `.sq` files follow the package path under `commonMain/sqldelight/`
 
 ```
 commonMain/sqldelight/org.weekendware.<project>/database/
@@ -101,7 +101,7 @@ commonMain/sqldelight/org.weekendware.<project>/database/
 
 ---
 
-### FS-06 · Test structure mirrors source structure
+### Test structure mirrors source structure
 
 A test for `presentation/chat/ChatViewModel.kt` lives at `commonTest/presentation/chat/ChatViewModelTest.kt`.
 
@@ -117,9 +117,9 @@ commonTest/kotlin/org/weekendware/<project>/
 
 ---
 
-### FS-07 · Stay single-module until ~10 features — extract `core/` first, then feature modules
+### Stay single-module until ~10 features — extract `core/` first, then feature modules
 
-Multi-module adds real Gradle complexity. A single `composeApp` module with convention plugins (L-02) builds fast and stays simple until the codebase is large enough that build times or team separation justify the overhead.
+Multi-module adds real Gradle complexity. A single `composeApp` module using convention plugins — see "Shared build configuration in `build-logic/`" in the Community section — builds fast and stays simple until the codebase is large enough that build times or team separation justify the overhead.
 
 When the time comes: extract `core/` (theme, shared UI, utilities) first. Then extract feature modules one at a time. Never extract everything at once.
 
@@ -131,22 +131,22 @@ When the time comes: extract `core/` (theme, shared UI, utilities) first. Then e
 
 KMP-specific architecture rules. Universal rules live in `weekendware-rules.md`.
 
-| ID | Rule |
-|----|------|
-| A-04 | No raw SQL outside `.sq` files |
-| A-05 | Every screen has a `Screen` + `ScreenContent` composable split |
-| A-06 | Every UI state has a `@Preview` — loading, empty, error, success minimum |
-| A-07 | Platform differences via `expect`/`actual` — no runtime platform checks |
-| A-11 | No Android framework types in `commonMain` |
-| A-12 | `StateFlow` in ViewModels — `remember { mutableStateOf }` only for UI-local state |
-| A-13 | UI state is a single `@Immutable data class` — no parallel `StateFlow` fields |
-| A-14 | `modifier` is the first optional parameter on every composable |
-| A-15 | New Koin module per feature domain |
-| A-16 | Use `Modifier.Node` over `composed { }` for custom modifiers |
-| A-17 | `clip` + `background` must come before `clickable` in modifier chains |
-| A-18 | Use `mutableIntStateOf` / `mutableLongStateOf` for primitive state |
+| Rule |
+|------|
+| No raw SQL outside `.sq` files |
+| Every screen has a `Screen` + `ScreenContent` composable split |
+| Every UI state has a `@Preview` — loading, empty, error, success minimum |
+| Platform differences via `expect`/`actual` — no runtime platform checks |
+| No Android framework types in `commonMain` |
+| `StateFlow` in ViewModels — `remember { mutableStateOf }` only for UI-local state |
+| UI state is a single `@Immutable data class` — no parallel `StateFlow` fields |
+| `modifier` is the first optional parameter on every composable |
+| New Koin module per feature domain |
+| Use `Modifier.Node` over `composed { }` for custom modifiers |
+| `clip` + `background` must come before `clickable` in modifier chains |
+| Use `mutableIntStateOf` / `mutableLongStateOf` for primitive state |
 
-### A-04 · No raw SQL outside `.sq` files
+### No raw SQL outside `.sq` files
 
 No raw SQL strings in Kotlin. Use SQLDelight's generated type-safe API exclusively.
 
@@ -158,7 +158,7 @@ No raw SQL strings in Kotlin. Use SQLDelight's generated type-safe API exclusive
 
 ---
 
-### A-05 · Every screen has a `Screen` + `ScreenContent` composable split
+### Every screen has a `Screen` + `ScreenContent` composable split
 
 `Screen` calls `koinViewModel()` and observes `StateFlow`. `ScreenContent` is a pure composable that receives state and callbacks.
 
@@ -170,7 +170,7 @@ No raw SQL strings in Kotlin. Use SQLDelight's generated type-safe API exclusive
 
 ---
 
-### A-06 · Every UI state has a `@Preview` — loading, empty, error, success minimum
+### Every UI state has a `@Preview` — loading, empty, error, success minimum
 
 > **Why:** Compose Multiplatform previews on the JVM target are the only rapid visual feedback loop in a KMP project — there's no native iOS rendering in Android Studio.
 
@@ -180,7 +180,7 @@ No raw SQL strings in Kotlin. Use SQLDelight's generated type-safe API exclusive
 
 ---
 
-### A-07 · Platform differences via `expect`/`actual` — no runtime platform checks
+### Platform differences via `expect`/`actual` — no runtime platform checks
 
 Never use `if (isAndroid())` or similar runtime checks to branch behaviour. Use `expect`/`actual` instead.
 
@@ -192,7 +192,7 @@ Never use `if (isAndroid())` or similar runtime checks to branch behaviour. Use 
 
 ---
 
-### A-11 · No Android framework types in `commonMain`
+### No Android framework types in `commonMain`
 
 No `android.content.Context`, `android.app.Activity`, or any other Android-only import in `commonMain`.
 
@@ -204,7 +204,7 @@ No `android.content.Context`, `android.app.Activity`, or any other Android-only 
 
 ---
 
-### A-12 · `StateFlow` in ViewModels — `remember { mutableStateOf }` only for UI-local state
+### `StateFlow` in ViewModels — `remember { mutableStateOf }` only for UI-local state
 
 ViewModels expose state via `StateFlow<UiState>`. `mutableStateOf` is only for composable-local ephemeral state (e.g. focus, expanded).
 
@@ -216,7 +216,7 @@ ViewModels expose state via `StateFlow<UiState>`. `mutableStateOf` is only for c
 
 ---
 
-### A-13 · UI state is a single `@Immutable data class` — no parallel `StateFlow` fields
+### UI state is a single `@Immutable data class` — no parallel `StateFlow` fields
 
 Model state as a single sealed class or `@Immutable data class`. Do not use multiple `StateFlow` fields to represent what is logically one state.
 
@@ -228,7 +228,7 @@ Model state as a single sealed class or `@Immutable data class`. Do not use mult
 
 ---
 
-### A-14 · `modifier` is the first optional parameter on every composable
+### `modifier` is the first optional parameter on every composable
 
 Parameter order: required params → `Modifier` (first optional) → other optional → trailing lambda.
 
@@ -240,7 +240,7 @@ Parameter order: required params → `Modifier` (first optional) → other optio
 
 ---
 
-### A-15 · New Koin module per feature domain
+### New Koin module per feature domain
 
 If a feature has its own repository, use case, and ViewModel, it gets its own Koin module. Don't bloat `sharedModule`.
 
@@ -248,7 +248,7 @@ If a feature has its own repository, use case, and ViewModel, it gets its own Ko
 
 ---
 
-### A-16 · Use `Modifier.Node` over `composed { }` for custom modifiers
+### Use `Modifier.Node` over `composed { }` for custom modifiers
 
 > **Why:** `composed { }` runs the modifier factory on every recomposition, allocating a new lambda each time. `Modifier.Node` is allocated once and reused across recompositions.
 
@@ -258,7 +258,7 @@ If a feature has its own repository, use case, and ViewModel, it gets its own Ko
 
 ---
 
-### A-17 · `clip` + `background` must come before `clickable` in modifier chains
+### `clip` + `background` must come before `clickable` in modifier chains
 
 ```kotlin
 Modifier
@@ -275,7 +275,7 @@ Modifier
 
 ---
 
-### A-18 · Use `mutableIntStateOf` / `mutableLongStateOf` for primitive state
+### Use `mutableIntStateOf` / `mutableLongStateOf` for primitive state
 
 > **Why:** `mutableStateOf<Int>` boxes the primitive on every read and write. The specialised variants store the value unboxed.
 
@@ -289,16 +289,16 @@ Modifier
 
 KMP-specific build rules. Universal build rules live in `weekendware-rules.md`.
 
-| ID | Rule |
-|----|------|
-| B-01 | All versions in `libs.versions.toml` — no version numbers in `build.gradle.kts` |
-| B-02 | Configuration cache and parallel builds enabled in `gradle.properties` |
-| B-03 | JDK version as a repo variable — never hardcoded in workflow YAML |
-| B-05 | Pin macOS runner and Xcode version |
-| B-11 | Add `kotlinx-collections-immutable` — use `ImmutableList`/`ImmutableMap` for Compose params |
-| B-12 | Enable Compose compiler stability reports in CI to catch unstable params |
+| Rule |
+|------|
+| All versions in `libs.versions.toml` — no version numbers in `build.gradle.kts` |
+| Configuration cache and parallel builds enabled in `gradle.properties` |
+| JDK version as a repo variable — never hardcoded in workflow YAML |
+| Pin macOS runner and Xcode version |
+| Add `kotlinx-collections-immutable` — use `ImmutableList`/`ImmutableMap` for Compose params |
+| Enable Compose compiler stability reports in CI to catch unstable params |
 
-### B-01 · All versions in `libs.versions.toml` — no version numbers in `build.gradle.kts`
+### All versions in `libs.versions.toml` — no version numbers in `build.gradle.kts`
 
 > **Why:** Version catalogs are the only way to share dependency versions across `commonMain`, `androidMain`, and `iosMain` with IDE autocompletion.
 
@@ -308,7 +308,7 @@ KMP-specific build rules. Universal build rules live in `weekendware-rules.md`.
 
 ---
 
-### B-02 · Configuration cache and parallel builds enabled in `gradle.properties`
+### Configuration cache and parallel builds enabled in `gradle.properties`
 
 ```properties
 org.gradle.jvmargs=-Xmx4096M -Dfile.encoding=UTF-8
@@ -324,7 +324,7 @@ Enables parallel task execution across KMP modules. Research cites 70% CI compil
 
 ---
 
-### B-03 · JDK version as a repo variable — never hardcoded in workflow YAML
+### JDK version as a repo variable — never hardcoded in workflow YAML
 
 `JAVA_JDK_VERSION = 21` as a GitHub repo variable. Already hit: JDK 26 breaks the Kotlin compiler in our Gradle version.
 
@@ -332,7 +332,7 @@ Enables parallel task execution across KMP modules. Research cites 70% CI compil
 
 ---
 
-### B-05 · Pin macOS runner and Xcode version
+### Pin macOS runner and Xcode version
 
 `runs-on: macos-14` + `XCODE_VERSION` as a repo variable. GitHub updates macOS images on their own schedule — an Xcode major version bump can silently break framework compilation.
 
@@ -340,17 +340,17 @@ Enables parallel task execution across KMP modules. Research cites 70% CI compil
 
 ---
 
-### B-11 · Add `kotlinx-collections-immutable` — use `ImmutableList`/`ImmutableMap` for Compose params
+### Add `kotlinx-collections-immutable` — use `ImmutableList`/`ImmutableMap` for Compose params
 
 The Compose compiler treats standard `List` and `Map` as unstable (they're mutable interfaces). Passing them as composable params forces full recomposition even when the contents haven't changed. `ImmutableList`/`ImmutableMap` from `kotlinx-collections-immutable` are inferred as stable.
 
-> **Failure mode:** A composable receives `List<ChatMessage>`. A parent recomposes for an unrelated reason. The composable recomposes too, even though the list is identical. Enable compose compiler reports (B-12) to surface these.
+> **Failure mode:** A composable receives `List<ChatMessage>`. A parent recomposes for an unrelated reason. The composable recomposes too, even though the list is identical. Enable Compose compiler stability reports — see the next rule — to surface these.
 
 *Source: Nacho Lopez / compose-rules project (2025–26), JetBrains KMP docs*
 
 ---
 
-### B-12 · Enable Compose compiler stability reports in CI to catch unstable params
+### Enable Compose compiler stability reports in CI to catch unstable params
 
 The compiler outputs a `composables.txt` report listing every composable that is non-restartable or non-skippable due to unstable parameters.
 
@@ -370,16 +370,16 @@ composeCompiler {
 
 KMP-specific testing rules. Universal QA rules live in `weekendware-rules.md`.
 
-| ID | Rule |
-|----|------|
-| QA-01 | ViewModel tests use `runTest` + Turbine — no `delay()` assertions |
-| QA-03 | Business logic tests in `commonTest` — platform-specific only for `expect`/`actual` |
-| QA-04 | Compose UI tests use `runComposeUiTest` (v2) with `testTag` — never text-based selectors |
-| QA-05 | `StandardTestDispatcher` is the default — call `advanceUntilIdle()` after `LaunchedEffect` |
-| QA-07 | SQLDelight tests use in-memory drivers only — never file-based |
-| QA-08 | Use `waitUntil { }` over idling resources for async UI test conditions |
+| Rule |
+|------|
+| ViewModel tests use `runTest` + Turbine — no `delay()` assertions |
+| Business logic tests in `commonTest` — platform-specific only for `expect`/`actual` |
+| Compose UI tests use `runComposeUiTest` (v2) with `testTag` — never text-based selectors |
+| `StandardTestDispatcher` is the default — call `advanceUntilIdle()` after `LaunchedEffect` |
+| SQLDelight tests use in-memory drivers only — never file-based |
+| Use `waitUntil { }` over idling resources for async UI test conditions |
 
-### QA-01 · ViewModel tests use `runTest` + Turbine — no `delay()` assertions
+### ViewModel tests use `runTest` + Turbine — no `delay()` assertions
 
 Turbine is KMP-compatible and runs in `commonTest`. `StateFlow` always replays its current value to new collectors, so `awaitItem()` catches initialisation bugs invisible to delay-based tests.
 
@@ -389,7 +389,7 @@ Turbine is KMP-compatible and runs in `commonTest`. `StateFlow` always replays i
 
 ---
 
-### QA-03 · Business logic tests in `commonTest` — platform-specific only for `expect`/`actual`
+### Business logic tests in `commonTest` — platform-specific only for `expect`/`actual`
 
 Tests in `commonTest` execute on every configured target automatically. `commonTest` coverage is the only cross-platform safety net.
 
@@ -399,7 +399,7 @@ Tests in `commonTest` execute on every configured target automatically. `commonT
 
 ---
 
-### QA-04 · Compose UI tests use `runComposeUiTest` (v2) with `testTag` — never text-based selectors
+### Compose UI tests use `runComposeUiTest` (v2) with `testTag` — never text-based selectors
 
 CMP 1.11.0 (May 2026) unified the Compose test API across all targets. Use `onNodeWithTag()` exclusively.
 
@@ -409,7 +409,7 @@ CMP 1.11.0 (May 2026) unified the Compose test API across all targets. Use `onNo
 
 ---
 
-### QA-05 · `StandardTestDispatcher` is the default — call `advanceUntilIdle()` after `LaunchedEffect`
+### `StandardTestDispatcher` is the default — call `advanceUntilIdle()` after `LaunchedEffect`
 
 CMP 1.11.0 changed the default test dispatcher. Coroutines no longer run automatically — they queue. Any composable with a `LaunchedEffect` requires explicit scheduler advancement before asserting.
 
@@ -419,7 +419,7 @@ CMP 1.11.0 changed the default test dispatcher. Coroutines no longer run automat
 
 ---
 
-### QA-07 · SQLDelight tests use in-memory drivers only — never file-based
+### SQLDelight tests use in-memory drivers only — never file-based
 
 File-backed test databases persist between runs on Desktop, creating ordering dependencies. In-memory databases are hermetic and parallelisable.
 
@@ -429,7 +429,7 @@ File-backed test databases persist between runs on Desktop, creating ordering de
 
 ---
 
-### QA-08 · Use `waitUntil { }` over idling resources for async UI test conditions
+### Use `waitUntil { }` over idling resources for async UI test conditions
 
 `waitUntil { condition }` polls the semantics tree directly with a configurable timeout — no production code hooks, no coupling between tests and app internals.
 
@@ -443,13 +443,13 @@ File-backed test databases persist between runs on Desktop, creating ordering de
 
 KMP-specific security rules. Universal security rules live in `weekendware-rules.md`.
 
-| ID | Rule | Level |
-|----|------|-------|
-| S-09 | At-rest database encryption before real users | **Blocker** |
-| S-10 | Secure token storage — Android Keystore, iOS Keychain, never SharedPreferences | **Blocker** |
-| S-11 | Desktop target has no secure keystore — document the limitation explicitly | Document |
+| Rule | Level |
+|------|-------|
+| At-rest database encryption before real users | **Blocker** |
+| Secure token storage — Android Keystore, iOS Keychain, never SharedPreferences | **Blocker** |
+| Desktop target has no secure keystore — document the limitation explicitly | Document |
 
-### S-09 · At-rest database encryption before real users `BLOCKER`
+### At-rest database encryption before real users `BLOCKER`
 
 SQLCipher (KmpSqlencrypt) with an encryption key stored in Android Keystore. Key is never hardcoded.
 
@@ -459,7 +459,7 @@ SQLCipher (KmpSqlencrypt) with an encryption key stored in Android Keystore. Key
 
 ---
 
-### S-10 · Secure token storage — Android Keystore, iOS Keychain, never SharedPreferences `BLOCKER`
+### Secure token storage — Android Keystore, iOS Keychain, never SharedPreferences `BLOCKER`
 
 Auth tokens must not land in `SharedPreferences` or `UserDefaults`. `androidx.security:security-crypto` deprecated July 2025 — use KVault or Kassaforte via `expect`/`actual`.
 
@@ -469,7 +469,7 @@ Auth tokens must not land in `SharedPreferences` or `UserDefaults`. `androidx.se
 
 ---
 
-### S-11 · Desktop target has no secure keystore — document the limitation explicitly
+### Desktop target has no secure keystore — document the limitation explicitly
 
 Android has Keystore; iOS has Keychain. The JVM Desktop target has neither. Either implement OS-level credential storage or document that Desktop has reduced security guarantees. Never fall back silently to a plaintext file.
 
@@ -479,19 +479,19 @@ Android has Keystore; iOS has Keychain. The JVM Desktop target has neither. Eith
 
 Patterns sourced from Philipp Lackner's 2026 GitHub activity, Jake Wharton's blog (Nov–Apr 2025–26), and Chris Banes' blog (Feb 2025).
 
-| ID | Rule |
-|----|------|
-| L-01 | Extract UI interaction state into plain state holder classes |
-| L-02 | Shared build configuration in `build-logic/` convention plugins |
-| L-03 | Use `value class` for domain identifiers |
-| L-04 | Use `Stylable` + `Style { }` for reusable visual styling — not modifier chains |
-| JW-01 | Don't use the Compose BOM — declare group versions directly in the version catalog |
-| JW-02 | Use AndroidX betas — don't wait for stable releases |
-| JW-03 | Remove all `-ktx` dependency suffixes |
-| CB-01 | Don't default to `Sequence` for performance — benchmark first |
-| CB-02 | Use a single-source string tool for multiplatform |
+| Rule |
+|------|
+| Extract UI interaction state into plain state holder classes |
+| Shared build configuration in `build-logic/` convention plugins |
+| Use `value class` for domain identifiers |
+| Use `Stylable` + `Style { }` for reusable visual styling — not modifier chains |
+| Don't use the Compose BOM — declare group versions directly in the version catalog |
+| Use AndroidX betas — don't wait for stable releases |
+| Remove all `-ktx` dependency suffixes |
+| Don't default to `Sequence` for performance — benchmark first |
+| Use a single-source string tool for multiplatform |
 
-### L-01 · Extract UI interaction state into plain state holder classes
+### Extract UI interaction state into plain state holder classes
 
 ViewModels own business-logic state via `StateFlow`. Form state, field validation, step tracking, and focus go in a plain Kotlin class — not the ViewModel.
 
@@ -503,7 +503,7 @@ ViewModels own business-logic state via `StateFlow`. Form state, field validatio
 
 ---
 
-### L-02 · Shared build configuration in `build-logic/` convention plugins
+### Shared build configuration in `build-logic/` convention plugins
 
 Convention plugins replace copy-pasted Gradle config across modules. Same pattern used in every Lackner course from Runique onwards, and Now in Android.
 
@@ -513,7 +513,7 @@ Convention plugins replace copy-pasted Gradle config across modules. Same patter
 
 ---
 
-### L-03 · Use `value class` for domain identifiers
+### Use `value class` for domain identifiers
 
 The K2 compiler makes `value class UserId(val id: String)` fully reliable in 2026. Prevents passing a `ConversationId` where a `UserId` is expected — compile-time enforcement of domain type safety.
 
@@ -523,7 +523,7 @@ The K2 compiler makes `value class UserId(val id: String)` fully reliable in 202
 
 ---
 
-### L-04 · Use `Stylable` + `Style { }` for reusable visual styling — not modifier chains
+### Use `Stylable` + `Style { }` for reusable visual styling — not modifier chains
 
 The Compose Styles API (2026, still experimental) packages a full set of visual attributes into a single `Style` object. Styles inherit down the composable tree, last-write-wins, and support animated state transitions for `press`, `hover`, `focused`, and `disabled` without manual `LaunchedEffect` wiring.
 
@@ -546,7 +546,7 @@ Box(Modifier.stylable(styleState, filledButton)) { ... }
 
 ---
 
-### JW-01 · Don't use the Compose BOM — declare group versions directly in the version catalog
+### Don't use the Compose BOM — declare group versions directly in the version catalog
 
 Gradle auto-aligns sibling artifacts within a library group via module metadata — the BOM's core job is already handled. The Compose BOM ships inconsistently, masks actual library versions behind a date string, and gets partially overridden the moment you adopt AndroidX betas.
 
@@ -554,7 +554,7 @@ Gradle auto-aligns sibling artifacts within a library group via module metadata 
 
 ---
 
-### JW-02 · Use AndroidX betas — don't wait for stable releases
+### Use AndroidX betas — don't wait for stable releases
 
 AndroidX API is locked at `beta01` — all subsequent beta and RC releases are bug-fixes only, no breaking changes. Google's first-party apps test these before public release. Waiting for stable means months of exposure to known bugs that are already fixed in beta. Requires adequate test coverage before adopting.
 
@@ -562,7 +562,7 @@ AndroidX API is locked at `beta01` — all subsequent beta and RC releases are b
 
 ---
 
-### JW-03 · Remove all `-ktx` dependency suffixes
+### Remove all `-ktx` dependency suffixes
 
 Android KTX extension modules are being officially deprecated — their Kotlin extensions have been absorbed into the core AndroidX libraries. Keeping `-ktx` dependencies adds a redundant artifact that will not receive future updates. Use Android Lint to surface remaining `-ktx` imports.
 
@@ -570,7 +570,7 @@ Android KTX extension modules are being officially deprecated — their Kotlin e
 
 ---
 
-### CB-01 · Don't default to `Sequence` for performance — benchmark first
+### Don't default to `Sequence` for performance — benchmark first
 
 kotlinx-benchmark results show `List` outperforms `Sequence` for typical-sized collections. `Sequence` carries per-element lambda allocation overhead that only pays off with large collections and multiple chained operations. Blindly swapping `List` for `Sequence` is premature optimisation that often makes things slower.
 
@@ -578,7 +578,7 @@ kotlinx-benchmark results show `List` outperforms `Sequence` for typical-sized c
 
 ---
 
-### CB-02 · Use a single-source string tool for multiplatform
+### Use a single-source string tool for multiplatform
 
 Don't manually maintain platform-specific string files (`strings.xml` and `Localizable.strings`). Use a tool — Twine, Lyricist, or Moko Resources — to generate all platform strings from a single YAML or Kotlin source of truth.
 
