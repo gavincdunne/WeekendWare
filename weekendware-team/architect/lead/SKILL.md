@@ -305,6 +305,11 @@ but nothing prompts a review. The PR is the handoff, not the commit.
 Use `gh pr create --base develop --head <branch>` with a short summary of what changed and
 a test plan checklist. Do not wait to be asked.
 
+**Every feature PR must embed the approved design artefacts directly in the PR body** — the
+wireframe and the final visual mockup that was approved before implementation began. No links —
+inline images only, using markdown image syntax. Export PNGs from the HTML mockups before
+opening the PR. Gavin should be able to see the approved design without leaving GitHub.
+
 ## Compliance cadence
 
 Do not save compliance audits for a single big review. Run a lightweight compliance check

@@ -139,6 +139,11 @@ reaches Gavin. Once you are satisfied, open a PR to `develop` using `gh pr creat
 only PRs that you have already reviewed — not raw designer output. A branch with no PR is
 invisible and counts as unfinished work.
 
+**Every design PR must embed the mockup screenshots directly in the PR body** — not as links,
+as inline images. Export PNGs from the HTML mockups using a headless browser or screenshot
+tool (`shot-scraper`, `puppeteer`, or `screencapture`) before opening the PR. GitHub renders
+inline images natively; links require the reviewer to leave the PR.
+
 ## Tone with Gavin
 
 Be direct and confident. You have a point of view. If you think something should look a certain

@@ -145,6 +145,9 @@ KMP-specific architecture rules. Universal rules live in `weekendware-rules.md`.
 | Use `Modifier.Node` over `composed { }` for custom modifiers |
 | `clip` + `background` must come before `clickable` in modifier chains |
 | Use `mutableIntStateOf` / `mutableLongStateOf` for primitive state |
+| Custom interactive elements must use `Modifier.minimumInteractiveComponentSize()` |
+| MD3 typography floor: never below `labelSmall` (11sp); prefer `bodySmall` (12sp) for readable text |
+| Never call `dynamicColorScheme()` when using a custom MaterialTheme |
 
 ### No raw SQL outside `.sq` files
 
@@ -282,6 +285,67 @@ Modifier
 > **Failure mode:** A scroll position or counter stored as `mutableStateOf<Int>`. Updated on every frame. Allocates an `Integer` object per update — invisible in unit tests, shows up as GC pressure in a production frame profiler.
 
 *Source: Nacho Lopez / compose-rules project (2025–26)*
+
+---
+
+### Custom interactive elements must use `Modifier.minimumInteractiveComponentSize()`
+
+M3 built-in components (Button, IconButton, NavigationBarItem, Checkbox, etc.) enforce the 48dp minimum touch target automatically. Custom composables — any interactive element you build yourself — do not.
+
+```kotlin
+// Every custom tappable element
+Box(
+    modifier = Modifier
+        .minimumInteractiveComponentSize()  // expands hit area to 48dp without changing visual size
+        .clickable { ... }
+) { ... }
+```
+
+> **Why:** The Android accessibility requirement is 48dp. `minimumInteractiveComponentSize()` enforces this on the semantics layer, expanding the touch target without changing the visual layout — the visual element stays small, the hit area meets the requirement.
+
+> **Failure mode:** A 24dp icon button with no hit area wrapper. User must tap precisely on a 24dp target. Fails Android accessibility audit. `AccessibilityService` flags it in the accessibility snapshot.
+
+*Source: Android Accessibility Guidelines; Compose M3 source — `InteractiveComponentSize.kt`*
+
+---
+
+### MD3 typography floor: never below `labelSmall` (11sp); prefer `bodySmall` (12sp) for readable text
+
+The MD3 type scale has 15 roles. `labelSmall` at 11sp Medium is the absolute floor — it exists for annotations and overflow indicators, not body content. Italic style at 11sp compounds the readability risk.
+
+| Role | Size | Use |
+|------|------|-----|
+| `bodySmall` | 12sp | Supporting text, captions, sub-text users must read |
+| `labelSmall` | 11sp | Overflow indicators, badges, timestamps — never italic |
+
+> **Why:** 11sp italic is at the edge of legibility on a 393px-wide phone. In bright sunlight or with reduced contrast sensitivity (diabetic retinopathy is a common T1D complication), it becomes unreadable before the contrast threshold is even reached.
+
+> **Failure mode:** Sub-caption text chosen at 11sp italic because it "looks right" in the mockup at 3× zoom. On a physical device, first-time users miss the context it provides entirely.
+
+*Source: Material Design 3 type scale; Apple HIG Dynamic Type (Caption 2 = 11pt floor)*
+
+---
+
+### Never call `dynamicColorScheme()` when using a custom MaterialTheme
+
+Android 12+ (API 31) can extract a colour palette from the user's wallpaper. `dynamicDarkColorScheme(context)` and `dynamicLightColorScheme(context)` generate a full `ColorScheme` from that palette. If called, they silently replace every role in the custom `ColorScheme` with wallpaper-derived colours — overriding brand colours, custom day/night schemes, and any deliberate theming.
+
+```kotlin
+// NEVER do this when the app has a custom theme
+val colorScheme = if (Build.VERSION.SDK_INT >= 31) {
+    dynamicDarkColorScheme(context)  // ← destroys custom scheme
+} else { ... }
+
+// CORRECT — always use your custom scheme directly
+val colorScheme = myCustomColorScheme(hour, isDark)
+MaterialTheme(colorScheme = colorScheme, ...) { ... }
+```
+
+> **Why:** The custom `ColorScheme` is the product identity. Dynamic color is opt-in on Android 12+ but the Compose M3 scaffolding in many tutorials calls it by default. A builder following a template without this rule will ship an app that looks different on every Android 12+ device depending on the user's wallpaper.
+
+> **Failure mode:** On a device with a red wallpaper, the app's "sage green" primary becomes red. On a purple wallpaper, the calm forest palette becomes purple. The brand evaporates.
+
+*Source: Material Design 3 dynamic color docs; Android developer blog (Material You)*
 
 ---
 

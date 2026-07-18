@@ -34,6 +34,7 @@ All eight rules are universal — they apply to every WeekendWare repo.
 | No AI attribution or co-author lines in commit messages |
 | Update `README.md` before pushing to GitHub |
 | Every project repo follows identical branching and commit standards |
+| Feature PRs must attach the approved wireframe and mockup for the feature |
 
 ### Three long-lived branches only: `main`, `staging`, `develop`
 
@@ -106,6 +107,18 @@ Same three-branch structure, same naming convention, same PR-to-develop workflow
 
 ---
 
+### Feature PRs must attach the approved wireframe and mockup for the feature
+
+Every feature PR must embed the wireframe and final mockup directly in the PR body as inline images — no links. Export PNGs from the HTML mockup files before opening the PR. GitHub renders inline images natively; a reviewer should see the approved design without leaving the PR.
+
+Applies to both engineering PRs (opened by the Architect) and design PRs (opened by the Head of Design).
+
+> **Why:** Code review without the design is an implementation check, not a product check. Inline images let Gavin verify at a glance that what was built matches what was approved.
+
+> **Failure mode:** A feature ships with a layout that drifted from the approved design. Nobody caught it in review because the mockup wasn't visible in the PR.
+
+---
+
 ## Architecture
 
 Universal rules apply to any layered project on any platform.
@@ -118,7 +131,10 @@ Universal rules apply to any layered project on any platform.
 | Design artefact before code — no screen ships without an approved design |
 | Design tokens before components — no hardcoded values in UI code |
 | Empty states and error states are designed — first-class screens |
+| Interactive element states designed — default, pressed, focused, disabled minimum |
 | All UI meets WCAG AA contrast — 3:1 for components and icons, 4.5:1 for body text |
+| Color is not the only means of conveying interactive state — WCAG 1.4.1 |
+| Minimum touch target — 24×24px CSS (WCAG 2.5.8); 48dp Android, 44pt iOS |
 | All code documented using the platform-appropriate documentation library |
 
 ### Repository interface in DI, never the concrete class
@@ -193,6 +209,23 @@ Every screen that can be empty or fail must have an explicit empty state and err
 
 ---
 
+### Interactive element states designed — default, pressed, focused, disabled minimum
+
+Every interactive element — button, icon button, nav item, input field — must have its visual states defined in the design before any implementation begins. Not every element has every state; a static icon has no pressed state. Use judgment. But every tappable element needs at minimum: default, pressed, and disabled.
+
+| State | What it is |
+|-------|-----------|
+| Default | Unpressed, unfocused. |
+| Focused / active | Input field selected, button receiving keyboard focus. |
+| Pressed | Tap/click in progress. Color, scale, or opacity change defined. |
+| Disabled | When the action isn't available. Clearly distinct from the default state. |
+
+> **Why:** Builders implement what design specifies. If pressed and disabled states aren't designed, they either get skipped or guessed — inconsistently, across every feature, by every builder.
+
+> **Failure mode:** A "disabled" send button rendered identically to an enabled one because no disabled state was ever designed. User taps repeatedly, nothing happens — no feedback, no explanation.
+
+---
+
 ### All UI meets WCAG AA contrast — 3:1 for components and icons, 4.5:1 for body text
 
 Every colour token must be verified at the time it's chosen. Document the contrast ratio alongside the token value in code and design.
@@ -205,6 +238,37 @@ Every colour token must be verified at the time it's chosen. Document the contra
 > **Failure mode:** Night nav inactive icons at `#2E4A35` on `#131E14` produced a 1.8:1 ratio — far below the 3:1 minimum for icons. Fixed to `#6A9470` (~4.9:1) after an accessibility review. Would have shipped invisible to a significant portion of the target user population.
 
 *Source: WCAG 2.1 AA — 1.4.3 Contrast (Minimum) for text, 1.4.11 Non-text Contrast for UI components and icons*
+
+---
+
+### Color is not the only means of conveying interactive state — WCAG 1.4.1
+
+Color alone cannot be the only way to distinguish an interactive state — active vs inactive, selected vs unselected, error vs normal. Every state change that uses color must also use a second differentiator: shape (filled pill, underline), label change, pattern, icon change, or weight change.
+
+> **Why:** WCAG 1.4.1: *"Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element."* Users with colour blindness, low contrast vision, or screen glare cannot reliably distinguish a teal icon from a grey one.
+
+> **Failure mode:** Basil's active nav item was differentiated solely by sage green icon vs grey inactive — a single signal invisible to anyone with reduced colour sensitivity. Fix: MD3 active indicator pill (shape change) in addition to the colour change.
+
+*Source: WCAG 2.2 — 1.4.1 Use of Color*
+
+---
+
+### Minimum touch target — 24×24px CSS (WCAG 2.5.8); 48dp Android, 44pt iOS
+
+Every interactive element must have a minimum tappable area. Visual size can be smaller than the hit area. The hit area is what counts.
+
+| Standard | Minimum | Notes |
+|----------|---------|-------|
+| WCAG 2.5.8 AA (2022) | 24×24 CSS px | Absolute floor; or offset so a 24px circle doesn't intersect adjacent targets |
+| WCAG 2.5.5 AAA | 44×44 CSS px | Stricter; matches Apple and approaches Android |
+| Android accessibility | 48×48 dp | Required; M3 built-ins enforce this automatically |
+| Apple HIG | 44×44 pt | Required for all interactive elements |
+
+> **Why:** Small tap targets are one of the most common mobile accessibility failures. They affect older users, people with motor impairments, and everyone using their phone with one hand on a bus.
+
+> **Failure mode:** A 24×24dp icon button with no hit area expansion. User taps repeatedly; the target captures maybe 30% of attempts. Under stress — a diabetic emergency, distracted moment — this is a failure of the product's core promise.
+
+*Source: WCAG 2.2 — 2.5.8 Target Size Minimum; Android Accessibility Guidelines; Apple HIG*
 
 ---
 
