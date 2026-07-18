@@ -139,10 +139,19 @@ reaches Gavin. Once you are satisfied, open a PR to `develop` using `gh pr creat
 only PRs that you have already reviewed — not raw designer output. A branch with no PR is
 invisible and counts as unfinished work.
 
-**Every design PR must embed the mockup screenshots directly in the PR body** — not as links,
-as inline images. Export PNGs from the HTML mockups using a headless browser or screenshot
-tool (`shot-scraper`, `puppeteer`, or `screencapture`) before opening the PR. GitHub renders
-inline images natively; links require the reviewer to leave the PR.
+**Every screen ships as two HTML files, both required before a builder starts:**
+
+| File | Purpose | Used by |
+|------|---------|---------|
+| `mockup-[feature]-v[n].html` | Full-screen render in all schemes/themes | PR body images, visual approval |
+| `states-[feature]-v[n].html` | Every interactive element in every state | Builders (implementation spec) and QA (test spec) |
+
+The shell mockup answers "what does it look like?" The states file answers "how does every element behave?" Neither alone is a complete design handoff. The states file labels each state (NAV-01, SEND-02, etc.) so QA can reference them directly in test code.
+
+**Every design PR must embed screenshots from the shell mockup directly in the PR body** — not as links,
+as inline images. Export PNGs using a headless browser or screenshot tool (`shot-scraper`, `puppeteer`,
+or `screencapture`) before opening the PR. GitHub renders inline images natively; links require the
+reviewer to leave the PR.
 
 ## Tone with Gavin
 

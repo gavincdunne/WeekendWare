@@ -129,6 +129,7 @@ Universal rules apply to any layered project on any platform.
 | Build order: storage → service → API layer |
 | `Result<T>` across layer boundaries — no thrown exceptions |
 | Design artefact before code — no screen ships without an approved design |
+| Screen design ships as two files — shell mockup (PR images) and states reference (builder + QA spec) |
 | Design tokens before components — no hardcoded values in UI code |
 | Empty states and error states are designed — first-class screens |
 | Interactive element states designed — default, pressed, focused, disabled minimum |
@@ -182,6 +183,25 @@ A Figma file, HTML mockup, or written design spec anchors every target platform 
 > **Failure mode:** `SettingsScreen` BG unit toggle was implemented without a design. When removed, there was no artefact to verify the remaining sections against.
 
 *Source: Material Design 3, Figma design system documentation*
+
+---
+
+### Screen design ships as two files — shell mockup and states reference
+
+Every screen has exactly two design artefacts. Both must exist and be approved before a builder writes a line of code.
+
+| File | What it shows | Used by |
+|------|--------------|---------|
+| `mockup-[feature]-v[n].html` | Full-screen render in all schemes or themes | PR body images, visual sign-off |
+| `states-[feature]-v[n].html` | Every interactive element in every state | Builders (implementation spec), QA (test spec) |
+
+The shell mockup answers "what does it look like?" The states reference answers "how does every element behave?" States are labelled (NAV-01, SEND-02, etc.) so QA can reference them directly in test descriptions and assertions.
+
+Builders pull both files before implementing. QA writes tests against the states file — each labelled state maps to at least one automated test.
+
+> **Why:** Without the states file, builders guess at inactive, pressed, loading, and error treatment every time — inconsistently, across every feature.
+
+> **Failure mode:** Send button always active because no inactive/disabled state was designed. Users send empty messages. Server receives them. Onboarding logic breaks silently.
 
 ---
 
