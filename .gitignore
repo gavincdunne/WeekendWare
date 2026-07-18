@@ -2,4 +2,5 @@
 !.gitignore
 !README.md
 !weekendware-team/
+!rules/
 **/.DS_Store
