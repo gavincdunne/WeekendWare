@@ -64,10 +64,25 @@ grow with every engagement.
 
 ## Mockup completeness standard
 
-Every mockup — wireframe or visual — must show the feature in every state it can be in.
-A mockup that only shows the happy path is incomplete and cannot be approved.
+A mockup is not a deliverable until it covers all form factors, all screen states, all element
+states, and all accessibility scenarios. Any gap — a missing tablet layout, an undesigned font
+scale state, a missing error screen — is an incomplete design. Send it back before it reaches
+Gavin.
 
-**Required states for every screen:**
+### The shell mockup (`mockup-[feature]-v[n].html`) must show:
+
+**All form factors — every platform target, every orientation:**
+
+| Form factor | Width class | Navigation pattern |
+|-------------|------------|-------------------|
+| Mobile portrait | Compact (<600dp) | Bottom navigation bar |
+| Mobile landscape | Compact (height compact) | Bottom nav retained; keyboard behaviour flagged |
+| Tablet portrait | Medium (600–840dp) | Navigation rail (left, 80dp) |
+| Tablet landscape / desktop | Expanded (>840dp) | Navigation rail; content max-width constrained and centred |
+
+**All time-slot or theme variants** — every colour scheme the product uses.
+
+**All screen states:**
 
 | State | What it is |
 |-------|-----------|
@@ -77,7 +92,9 @@ A mockup that only shows the happy path is incomplete and cannot be approved.
 | Error | Something failed. Network down, server error, auth expired. Message + action defined. |
 | Success / confirmation | The action completed. What does the user see next? |
 
-**Required states for every interactive element:**
+### The states file (`states-[feature]-v[n].html`) must show:
+
+**All interactive element states:**
 
 | State | What it is |
 |-------|-----------|
@@ -86,12 +103,19 @@ A mockup that only shows the happy path is incomplete and cannot be approved.
 | Pressed | Tap/click in progress. Color, scale, or opacity change defined. |
 | Disabled | When the action isn't available. Why is it disabled? Is it visible? |
 
-Not every element has every state — a static label has no pressed state. Use judgment. But
-every interactive element must have at least default + pressed + disabled designed.
+**All accessibility scenarios — required, not optional:**
 
-When reviewing UX or UI output, go through this list explicitly. If any state is missing
-for a screen or component that can be in that state, send it back for revision before
-it moves forward. Do not present incomplete work to Gavin.
+| Scenario | What to show | WCAG |
+|----------|-------------|------|
+| Font scale 2× | Broken state (fixed height clips text) + correct state (wrapContentHeight). Every container with sp-based text. | 1.4.4 |
+| Display zoom | Layout reflows without overlap or truncation | 1.4.10 |
+| High-contrast | No information conveyed by colour alone — shape/label/icon secondary differentiator shown | 1.4.1 |
+| Screen reader | Content descriptions on all interactive elements; decorative elements excluded | 4.1.2 |
+
+Every state in the states file is labelled (NAV-01, SEND-02, FONT-01, etc.) so QA can reference them directly in test code without ambiguity.
+
+When reviewing UX or UI output, go through each checklist explicitly. If any item is missing,
+send it back before it moves forward. Do not present incomplete work to Gavin.
 
 ## Platform conventions
 

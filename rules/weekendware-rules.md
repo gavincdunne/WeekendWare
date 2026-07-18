@@ -129,7 +129,7 @@ Universal rules apply to any layered project on any platform.
 | Build order: storage → service → API layer |
 | `Result<T>` across layer boundaries — no thrown exceptions |
 | Design artefact before code — no screen ships without an approved design |
-| Screen design ships as two files — shell mockup (PR images) and states reference (builder + QA spec) |
+| Screen design ships as two files — shell mockup (all form factors + all themes) and states reference (all element states + all accessibility scenarios) |
 | Design tokens before components — no hardcoded values in UI code |
 | Empty states and error states are designed — first-class screens |
 | Interactive element states designed — default, pressed, focused, disabled minimum |
@@ -190,18 +190,34 @@ A Figma file, HTML mockup, or written design spec anchors every target platform 
 
 Every screen has exactly two design artefacts. Both must exist and be approved before a builder writes a line of code.
 
-| File | What it shows | Used by |
-|------|--------------|---------|
-| `mockup-[feature]-v[n].html` | Full-screen render in all schemes or themes | PR body images, visual sign-off |
-| `states-[feature]-v[n].html` | Every interactive element in every state | Builders (implementation spec), QA (test spec) |
+| File | What it must contain | Used by |
+|------|---------------------|---------|
+| `mockup-[feature]-v[n].html` | All time-slot or theme variants **+ all form factors** (portrait, landscape, tablet, desktop) | PR body images, visual sign-off |
+| `states-[feature]-v[n].html` | Every interactive element in every state **+ all accessibility scenarios** (font scale 2×, display zoom, high-contrast, screen reader) | Builders (implementation spec), QA (test spec) |
 
-The shell mockup answers "what does it look like?" The states reference answers "how does every element behave?" States are labelled (NAV-01, SEND-02, etc.) so QA can reference them directly in test descriptions and assertions.
+**The shell mockup is not complete unless it shows every form factor.** Portrait-only is a draft, not a deliverable. Required form factors for any mobile product targeting KMP or multi-platform:
 
-Builders pull both files before implementing. QA writes tests against the states file — each labelled state maps to at least one automated test.
+| Form factor | Width class | Navigation pattern |
+|-------------|------------|-------------------|
+| Mobile portrait | Compact (<600dp) | Bottom navigation bar |
+| Mobile landscape | Compact (width <600dp, height compact) | Bottom nav retained; keyboard + height behaviour flagged |
+| Tablet portrait | Medium (600–840dp) | Navigation rail (left, 80dp) |
+| Tablet landscape / desktop | Expanded (>840dp) | Navigation rail; content max-width constrained and centred |
 
-> **Why:** Without the states file, builders guess at inactive, pressed, loading, and error treatment every time — inconsistently, across every feature.
+**The states file is not complete unless it shows accessibility scenarios.** Required:
 
-> **Failure mode:** Send button always active because no inactive/disabled state was designed. Users send empty messages. Server receives them. Onboarding logic breaks silently.
+| Scenario | What to show | WCAG |
+|----------|-------------|------|
+| Font scale 2× | Broken state (fixed height clips text) + correct state (wrapContentHeight). Every element with sp-based text. | 1.4.4 |
+| Display zoom | Layout reflows without overlap or truncation | 1.4.10 |
+| High-contrast | No information conveyed by colour alone — shape/label/icon secondary differentiator present | 1.4.1 |
+| Screen reader | Content descriptions on all interactive elements; decorative elements excluded from a11y tree | 4.1.2 |
+
+States are labelled (NAV-01, SEND-02, FONT-01, etc.) so QA can reference them directly in test descriptions and assertions. Builders pull both files before implementing. QA writes tests against the states file — each labelled state maps to at least one automated test.
+
+> **Why:** A design that only shows portrait and happy-path is half a contract. Builders implement what the design specifies. If a form factor or accessibility scenario isn't shown, it isn't built — or it's guessed, and the guess is usually wrong.
+
+> **Failure mode:** Portrait-only design shipped to builder. Builder implements a fixed-height nav bar. On tablet, the nav bar renders at phone width. On Android at 2× font scale, nav labels clip. Both are regressions that required design work to catch — work that should have happened before a single line of code was written.
 
 ---
 
