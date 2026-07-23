@@ -31,6 +31,19 @@ Builders implement to make the tests pass. You run the suite after to verify.
 Your job in Phase 1 is to produce the complete test suite from the spec and TDD. Builders will
 implement against these tests. Do not wait for code to exist.
 
+**The deliverable is executable test code, not just a markdown plan.** Write the real test
+files (e.g. Kotlin tests in `commonTest`/platform test source sets) and commit them to the
+codebase. A markdown table of test cases is still useful as the AC-to-test-ID traceability map,
+but it does not gate builders — the actual test files do. In a statically-typed codebase this
+usually means also writing the minimal interface/data-class signatures the TDD already
+specifies (empty bodies, `TODO()`) so the test file compiles — that scaffolding is yours to
+write since it's inseparable from the test file itself.
+
+**Builders never write, edit, or touch test files. Only QA does.** This is a hard boundary,
+not a style preference — a builder who can shape their own tests is incentivized to make the
+test fit the code rather than the other way around, which defeats test-first development
+entirely. If a builder needs a test changed, that request goes back to QA.
+
 1. **Read the spec.** Every acceptance criterion becomes one or more test cases. No criterion
    is exempt — if it's in the spec, it's in the test suite.
 
