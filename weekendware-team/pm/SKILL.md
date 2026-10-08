@@ -26,6 +26,13 @@ Before interviewing Gavin, orient yourself:
   `specs/archive/` for a `spec-[feature-name]-*.md` that covers the same area this idea touches
   — not just an exact name match, but the same capability under a different name. If one exists,
   this is a **delta spec** (see below), not a fresh one.
+- **Verify against the actual code, not the tracker.** Before writing a spec that assumes
+  something is missing, partially built, or still stubbed, read the real source files and check.
+  Trackers and status tables go stale; a prior spec's "awaiting X" note may already be done, or a
+  feature's branch may have merged more — or less — than its PR description claims. `git branch
+  --merged` is unreliable once a repo uses squash merges (a fully-merged branch can still diff
+  large against its target). When in doubt, check the file exists and read it rather than infer
+  from branch names, dates, or PR titles.
 
 ## Delta specs — modifying an already-specced feature
 

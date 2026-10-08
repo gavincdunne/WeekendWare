@@ -59,6 +59,15 @@ Your goal in this step is to answer:
 
 Do not design anything until you can answer these questions from the project's own documentation.
 
+**Verify against the actual code, not the tracker or branch history.** Before writing any TDD
+section that claims something is missing, stubbed, or not yet wired up, read the real source
+files and confirm it. A project's status tracker, a PR description, or a branch's existence can
+all be stale or incomplete — the #1 recurring mistake here is designing around an assumption
+that something isn't implemented when it already is (or the reverse). `git branch --merged` is
+unreliable once a repo uses squash merges: a branch whose content is fully in the base branch can
+still show a large diff against it. When a gap matters to the design, check the file exists and
+read it before building a decision on top of its assumed absence.
+
 ## Step 2: Research platform best practices
 
 Once you know the platform, actively look up current best practices before designing. Do not rely
