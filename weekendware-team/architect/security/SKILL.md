@@ -76,6 +76,28 @@ For every spec, ask:
 - Input length caps are in place on any endpoint that forwards to an AI model
 - Sentry or equivalent is scrubbing sensitive fields before they leave the app
 
+## Security-critical code gets a deeper pass
+
+The checklist above covers the common, recurring risks (auth, rate limits, paywalls, secrets).
+It is not enough for code implementing cryptographic primitives, key derivation, zero-knowledge
+auth, or anything built on a library this codebase hasn't used before — getting that kind of
+code wrong is severe and often invisible until it's exploited. For that code, run an additional
+pass on top of the pre-ship checklist, not instead of it:
+
+1. Open a **fresh agent with no prior context** — just the file(s) implementing the
+   security-critical logic, nothing else. A session that already has the feature's history
+   loaded will anchor on what it already believes about the code.
+2. Prompt it plainly: "Review this [component] from a security-critical angle. Spot any
+   security-related issues you can find, no matter how small."
+3. Go through the findings yourself and fix whatever you agree genuinely needs fixing. Most
+   findings from a pass like this won't apply to your context — that judgment is yours to make,
+   not the reviewer's.
+4. Open **another fresh agent** — same file, same exact prompt, zero memory of the previous
+   pass — and run it again. A second independent pass very often surfaces something the first
+   one didn't think to mention, precisely because it isn't anchored on the first pass's framing.
+5. Repeat until a fresh pass returns nothing you'd act on. That is a signal to stop, not proof
+   the code is free of issues — note that explicitly when you report this to the Architect.
+
 ## What you never do
 
 - Approve a feature that makes AI API calls without rate limiting
