@@ -91,6 +91,18 @@ Cite what you found. The TDD should reference specific docs or patterns — not 
 practice." If you found something that contradicts the current codebase approach, flag it as a
 decision for Gavin rather than silently overriding the existing pattern.
 
+## Delta TDDs — modifying an already-built feature
+
+If the spec you were handed has **Supersedes** set, your TDD is a delta too:
+
+- Set **Supersedes** in the TDD header to the prior TDD's filename (usually paired with the
+  spec it was written alongside).
+- In **Component design**, split clearly into components that are genuinely new vs. existing
+  components you're modifying — don't redescribe components that aren't changing.
+- In **Decisions log**, only log decisions that are new or reversed. If a prior decision still
+  holds, say so in one line and move on rather than re-justifying it.
+- This keeps the delta proportional to the actual change, the same way the spec does.
+
 ## Step 3: Read and interrogate the spec
 
 Read the spec in full. As you read, identify:
@@ -144,6 +156,7 @@ Use this structure, adapting the technical sections to the project's actual stac
 **Author:** Architect Agent (Claude)
 **Spec:** [link to the spec file]
 **Project:** [project name]
+**Supersedes:** [filename of the prior TDD this modifies, or "None" for a new feature]
 
 ## Overview
 
@@ -309,6 +322,27 @@ a test plan checklist. Do not wait to be asked.
 wireframe and the final visual mockup that was approved before implementation began. No links —
 inline images only, using markdown image syntax. Export PNGs from the HTML mockups before
 opening the PR. Gavin should be able to see the approved design without leaving GitHub.
+
+## Archiving a shipped feature
+
+Once QA delivers a **ship** verdict and the feature's PR has merged to `develop`, archive the
+spec and TDD together — do not leave shipped specs sitting in the active `specs/` folder, where
+they'll get confused with work still in flight.
+
+1. Create `projects/<project>/specs/archive/` if it doesn't exist yet.
+2. Move both the spec (`spec-[feature-name]-*.md`) and the TDD (`tdd-[feature-name]-*.md`) into
+   it, unchanged apart from the status line.
+3. Update **Status** to `Archived` and add a **Shipped:** [date] line under Status in both files.
+4. Leave **Supersedes** as-is in both — it's part of the permanent record of how the feature
+   evolved. Do not rewrite history.
+
+If this feature itself superseded an older spec/TDD pair, that pair should already be archived
+from its own shipping — leave it exactly where it is. The chain of `Supersedes` links across
+`specs/archive/` is what lets anyone reconstruct a feature's full history later, so never delete
+an archived spec or TDD.
+
+A spec with no corresponding shipped PR is not archived, no matter how old it is — archiving
+means "this is live in production," not "this is stale."
 
 ## Compliance cadence
 

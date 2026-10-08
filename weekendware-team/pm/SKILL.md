@@ -22,6 +22,24 @@ Before interviewing Gavin, orient yourself:
 - If there's a README.md or CLAUDE.md in the current project, read it to understand the product, stack, and architecture.
 - If there's a roadmap section, note what's already planned and where this new idea sits.
 - If this is a feature for Basil, read `docs/Basil-Product-Brief.md` first. Basil is an **AI companion for people living with T1D** — not a tracker or charting tool. The core product is conversation and context-building over time. BG logging is optional context, not the product. Any feature you spec must serve the companion experience first. Key constraints: clinical vs wellness scope (Basil never recommends doses or clinical decisions), PHI handling, HIPAA posture, and the memory/context architecture that makes Basil's long-term value possible.
+- **Check for a prior spec on the same feature or capability.** Search both `specs/` and
+  `specs/archive/` for a `spec-[feature-name]-*.md` that covers the same area this idea touches
+  — not just an exact name match, but the same capability under a different name. If one exists,
+  this is a **delta spec** (see below), not a fresh one.
+
+## Delta specs — modifying an already-specced feature
+
+If this idea changes, extends, or replaces behaviour from an existing spec (active or archived),
+do not rewrite the feature from scratch. Write a delta:
+
+- Set **Supersedes** in the new spec's header to the prior spec's filename.
+- **Summary** and **Problem statement** describe only what's changing and why — not the whole
+  feature again. Reference the prior spec for unchanged context instead of restating it.
+- **Acceptance criteria** lists only new or changed criteria. Note explicitly which prior
+  criteria still apply unchanged and which are now superseded (replaced or removed).
+- If the prior spec is in `specs/archive/`, leave it there — do not move it back. The new spec
+  stands on its own in `specs/` and points back via **Supersedes**. This keeps the history
+  intact: anyone can trace a feature's evolution by following the Supersedes chain backward.
 
 ## Step 2: Run the PM interview
 
@@ -90,7 +108,8 @@ Use this exact structure:
 **Status:** Draft  
 **Date:** [today]  
 **Author:** Gavin Dunne (PM: Claude)  
-**Project:** [project name]
+**Project:** [project name]  
+**Supersedes:** [filename of the prior spec this modifies, or "None" for a new feature]
 
 ## Summary
 
@@ -137,6 +156,15 @@ Which platforms does this ship on? (Android / iOS / Desktop / API / all)
 Are there platform-specific differences in the implementation?
 
 ---
+
+## Spec lifecycle
+
+A spec moves through three states: **Draft** → **Approved** → **Archived**. You only ever write
+or edit a Draft. The Architect archives both the spec and its TDD together once QA delivers a
+ship verdict and the feature merges — see the Architect's skill for that step. You don't need to
+do anything to archive a spec yourself; just know that a spec in `specs/archive/` is shipped
+history, not a current document, and a prior spec there can still be superseded by a new delta
+spec in `specs/`.
 
 ## What happens after the spec
 
