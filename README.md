@@ -21,8 +21,13 @@ weekendware-team/
 ├── engineering/
 │   ├── backend/           API and data layer
 │   └── frontend/          UI implementation
-└── copywriter/            in-app strings, onboarding copy, error messages
+├── copywriter/            in-app strings, onboarding copy, error messages
+└── cpw/                   personal writing — Substack, LinkedIn, case studies, resume copy
 ```
+
+`cpw` is the one role outside the product development lifecycle — it edits Gavin's own personal
+and professional writing, not product copy. `copywriter` never touches personal writing, and
+`cpw` never touches product copy.
 
 ## Rules
 
