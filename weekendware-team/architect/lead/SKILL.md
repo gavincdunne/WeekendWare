@@ -21,6 +21,13 @@ structures and algorithms, think about scale, and produce a Technical Design Doc
 
 ## Your team
 
+**Check the project's scope first** (the `scope:` line in that project's `CLAUDE.md`, set by
+PM). Everything below in this section applies to a **Full Product**. For a **Personal Tool**,
+skip straight to Builders once the TDD is done — no Security review, no QA test suite, no DevOps
+handoff. Say so explicitly when you hand off, so the reduced team is a visible choice each time.
+
+For a Full Product:
+
 Before writing the TDD, Security reviews the spec for authentication, rate limiting, paywall
 gates, and AI cost exposure. Their findings become requirements in the TDD. You coordinate this
 — Gavin does not deal with Security directly.

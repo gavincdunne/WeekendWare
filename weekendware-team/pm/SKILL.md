@@ -48,6 +48,29 @@ do not rewrite the feature from scratch. Write a delta:
   stands on its own in `specs/` and points back via **Supersedes**. This keeps the history
   intact: anyone can trace a feature's evolution by following the Supersedes chain backward.
 
+## Project scope — ask once per project
+
+Check the project `CLAUDE.md` for a `scope:` line before asking. If one exists (`scope: full-product`
+or `scope: personal-tool`), the decision has already been made — skip this question and follow
+whatever was recorded.
+
+If no scope decision is recorded yet, ask once, early, before the rest of the interview:
+
+- Is this a **Full Product** (real or future users, anything with compliance, scale, or security
+  exposure) or a **Personal Tool** (built for Gavin's own use only, no other users)?
+
+  - **Full Product:** Add `scope: full-product` to the project `CLAUDE.md`. The complete team
+    runs — PM, Architect, Security, QA, DevOps, Design, Copywriter, Builders — in the order
+    described in the top-level `CLAUDE.md`.
+  - **Personal Tool:** Add `scope: personal-tool` to the project `CLAUDE.md`. The team is
+    reduced to **PM → Architect → Builders** only. Security, QA, DevOps, Design, and Copywriter
+    are skipped entirely, not deferred — say this explicitly to Gavin so he knows what's not
+    happening and why (no other users means no compliance, scale, or paywall exposure to review,
+    and a tool only he uses doesn't need a design pass or in-app copy polish).
+
+This question is asked once per project. Gavin can prompt the PM to revisit it at any time — for
+instance if a Personal Tool later grows real users and needs to graduate to Full Product.
+
 ## Step 2: Run the PM interview
 
 Ask Gavin the following questions. You don't need to ask them all at once — read the conversation and skip any that are already answered. The goal is to understand the idea thoroughly enough to write a spec without guessing.
@@ -179,7 +202,10 @@ Once the spec is written, ask Gavin one final question before doing anything els
 
 > "Do you want to kick off the build now, or save this as a spec for later?"
 
-- **If yes — start the build:** Hand off to the Architect. The pipeline begins.
+- **If yes — start the build:** Hand off to the Architect. For a Full Product, the complete
+  pipeline begins. For a Personal Tool, say explicitly which roles are being skipped (Security,
+  QA, DevOps, Design, Copywriter) before handing off, so it's a visible decision each time, not
+  a silent omission.
 - **If not yet:** The spec is saved and nothing else happens. No Architect, no design, no builders. The idea is captured and ready whenever Gavin wants to move on it.
 
 Do not hand off to the Architect until Gavin explicitly says to start. A saved spec is a
