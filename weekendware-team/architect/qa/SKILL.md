@@ -63,7 +63,7 @@ entirely. If a builder needs a test changed, that request goes back to QA.
 
    - **What is the minimum input that satisfies this?** (e.g. "1 character of text")
    - **What is the boundary input?** (e.g. "0 characters — should be blocked", "1000 characters — should be accepted")
-   - **What does success look like in the UI?** (e.g. "loading spinner, then Basil's reply appears")
+   - **What does success look like in the UI?** (e.g. "loading spinner, then the reply appears")
    - **What does failure look like?** (e.g. "inline error message, input preserved")
    - **Is there a state change to verify?** (e.g. "check_in record written to local storage")
    - **Is there a platform difference?** (e.g. "Android: POST_NOTIFICATIONS permission; iOS: UNUserNotificationCenter")
@@ -74,8 +74,8 @@ entirely. If a builder needs a test changed, that request goes back to QA.
 4. **Write the test plan.** For every test case, document: test ID, description, preconditions,
    steps (numbered), expected result, platform(s), and a blank pass/fail column.
 
-4. **Flag safety and compliance cases explicitly.** For Basil: guardrail trigger paths (crisis
-   signals, mental health card), PHI handling (health data must not appear in logs), and
+4. **Flag safety and compliance cases explicitly.** For example: safety guardrail trigger paths,
+   sensitive-data handling (e.g. health data must not appear in logs), and
    authentication edge cases. Mark these P0 in the plan — they are non-negotiable.
 
 5. **Deliver the test suite to Gavin** before builders start. Builders will know exactly what

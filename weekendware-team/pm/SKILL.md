@@ -21,7 +21,7 @@ Before interviewing Gavin, orient yourself:
 
 - If there's a README.md or CLAUDE.md in the current project, read it to understand the product, stack, and architecture.
 - If there's a roadmap section, note what's already planned and where this new idea sits.
-- If this is a feature for Basil, read `docs/Basil-Product-Brief.md` first. Basil is an **AI companion for people living with T1D** — not a tracker or charting tool. The core product is conversation and context-building over time. BG logging is optional context, not the product. Any feature you spec must serve the companion experience first. Key constraints: clinical vs wellness scope (Basil never recommends doses or clinical decisions), PHI handling, HIPAA posture, and the memory/context architecture that makes Basil's long-term value possible.
+- Read the project's `CLAUDE.md`, rules file, and any product brief it points to before speccing. They define what the product is and isn't, its key constraints (e.g. clinical vs wellness scope for a health product, sensitive-data handling, compliance posture), and the experience every feature must serve first.
 - **Check for a prior spec on the same feature or capability.** Search both `specs/` and
   `specs/archive/` for a `spec-[feature-name]-*.md` that covers the same area this idea touches
   — not just an exact name match, but the same capability under a different name. If one exists,
@@ -78,7 +78,7 @@ Ask Gavin the following questions. You don't need to ask them all at once — re
 **Core questions:**
 
 1. **The problem** — What user problem does this solve? What's happening today that's frustrating or missing?
-2. **The user** — Who specifically benefits from this? (For Basil: T1D patients managing daily life, or a different persona?)
+2. **The user** — Who specifically benefits from this? (The product's core persona, or a different one?)
 3. **Success** — If this ships and works, what does the user do differently? What's the measurable outcome?
 4. **Scope** — What's the simplest version of this that would still be valuable? What can wait for v2?
 5. **Dependencies** — Does this require other things to be built first? Does it touch existing systems that need to change?

@@ -101,6 +101,14 @@ The README is the public face of the repo. New agent hired? New folder? Rule cha
 
 ---
 
+### Shared skills and rules stay project-agnostic
+
+Nothing committed to this repo (`weekendware-team/**/SKILL.md`, `rules/*.md`, `README.md`) names a specific project or uses one as its example. Project-specific rules, voice, constraints, and failure stories go in `projects/<project>/rules/<project>-rules.md` or that project's `CLAUDE.md`, which live outside this repo. Use generic examples instead ("a health app", "a field-service tool").
+
+> **Why:** The team skills are reusable across every project and public on GitHub. Project details in them leak private context and steer agents on other projects toward the wrong product.
+
+---
+
 ### Every project repo follows identical branching and commit standards
 
 Same three-branch structure, same naming convention, same PR-to-develop workflow — whether it's a KMP app, a Rust API, or a future web project. No repo gets a special exception.
@@ -180,7 +188,7 @@ A Figma file, HTML mockup, or written design spec anchors every target platform 
 
 > **Why:** Building without one produces divergent implementations that are expensive to fix.
 
-> **Failure mode:** `SettingsScreen` BG unit toggle was implemented without a design. When removed, there was no artefact to verify the remaining sections against.
+> **Failure mode:** A `SettingsScreen` units toggle was implemented without a design. When removed, there was no artefact to verify the remaining sections against.
 
 *Source: Material Design 3, Figma design system documentation*
 
@@ -269,7 +277,7 @@ Every colour token must be verified at the time it's chosen. Document the contra
 - **UI components and icons:** 3:1 minimum (WCAG 1.4.11 Non-text Contrast)
 - **Body text and UI text:** 4.5:1 minimum (WCAG 1.4.3 Contrast Minimum)
 
-> **Why:** WeekendWare products are built for real people with real conditions. Contrast is a baseline accessibility requirement — not a polish concern — on every project. For Basil specifically: diabetic retinopathy is a common long-term complication of T1D and directly reduces contrast sensitivity.
+> **Why:** WeekendWare products are built for real people with real conditions. Contrast is a baseline accessibility requirement — not a polish concern — on every project. Many users have reduced contrast sensitivity (age, or conditions such as diabetic retinopathy).
 
 > **Failure mode:** Night nav inactive icons at `#2E4A35` on `#131E14` produced a 1.8:1 ratio — far below the 3:1 minimum for icons. Fixed to `#6A9470` (~4.9:1) after an accessibility review. Would have shipped invisible to a significant portion of the target user population.
 
@@ -283,7 +291,7 @@ Color alone cannot be the only way to distinguish an interactive state — activ
 
 > **Why:** WCAG 1.4.1: *"Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element."* Users with colour blindness, low contrast vision, or screen glare cannot reliably distinguish a teal icon from a grey one.
 
-> **Failure mode:** Basil's active nav item was differentiated solely by sage green icon vs grey inactive — a single signal invisible to anyone with reduced colour sensitivity. Fix: MD3 active indicator pill (shape change) in addition to the colour change.
+> **Failure mode:** An app's active nav item was differentiated solely by a green icon vs grey inactive — a single signal invisible to anyone with reduced colour sensitivity. Fix: MD3 active indicator pill (shape change) in addition to the colour change.
 
 *Source: WCAG 2.2 — 1.4.1 Use of Color*
 
@@ -302,7 +310,7 @@ Every interactive element must have a minimum tappable area. Visual size can be 
 
 > **Why:** Small tap targets are one of the most common mobile accessibility failures. They affect older users, people with motor impairments, and everyone using their phone with one hand on a bus.
 
-> **Failure mode:** A 24×24dp icon button with no hit area expansion. User taps repeatedly; the target captures maybe 30% of attempts. Under stress — a diabetic emergency, distracted moment — this is a failure of the product's core promise.
+> **Failure mode:** A 24×24dp icon button with no hit area expansion. User taps repeatedly; the target captures maybe 30% of attempts. Under stress — an emergency, a distracted moment — this is a failure of the product's core promise.
 
 *Source: WCAG 2.2 — 2.5.8 Target Size Minimum; Android Accessibility Guidelines; Apple HIG*
 
