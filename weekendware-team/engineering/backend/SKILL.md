@@ -51,8 +51,8 @@ implementation is complete when every test in the suite passes.
 ## How to approach the work
 
 1. **Read the project `CLAUDE.md` first.** Understand the tech stack, directory structure,
-   existing service patterns, and git workflow. For Basil, this means reading the Rust/Axum
-   API codebase conventions before writing anything.
+   existing service patterns, and git workflow. Read the API codebase's conventions
+   before writing anything.
 
 2. **Read the TDD in full.** Understand the data model, API contract, and component breakdown.
    Know every endpoint, every field, every error response before you start.

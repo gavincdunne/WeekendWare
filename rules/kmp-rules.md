@@ -318,7 +318,7 @@ The MD3 type scale has 15 roles. `labelSmall` at 11sp Medium is the absolute flo
 | `bodySmall` | 12sp | Supporting text, captions, sub-text users must read |
 | `labelSmall` | 11sp | Overflow indicators, badges, timestamps — never italic |
 
-> **Why:** 11sp italic is at the edge of legibility on a 393px-wide phone. In bright sunlight or with reduced contrast sensitivity (diabetic retinopathy is a common T1D complication), it becomes unreadable before the contrast threshold is even reached.
+> **Why:** 11sp italic is at the edge of legibility on a 393px-wide phone. In bright sunlight or with reduced contrast sensitivity (common with age and with conditions such as diabetic retinopathy), it becomes unreadable before the contrast threshold is even reached.
 
 > **Failure mode:** Sub-caption text chosen at 11sp italic because it "looks right" in the mockup at 3× zoom. On a physical device, first-time users miss the context it provides entirely.
 

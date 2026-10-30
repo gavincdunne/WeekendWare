@@ -237,7 +237,7 @@ Required change in `Config.xcconfig`:
 OTHER_LDFLAGS = $(inherited) -lSQLCipher
 ```
 
-> **Failure mode:** The app ships to production with an unencrypted SQLite file. All user conversation history — diabetes management data — is readable from any iTunes backup.
+> **Failure mode:** The app ships to production with an unencrypted SQLite file. All user data, including sensitive personal history, is readable from any iTunes backup.
 
 *Source: SQLCipher iOS integration (zetetic.net/sqlcipher/ios-tutorial); OWASP Mobile Top 10 — M9: Insecure Data Storage; KmpSqlencrypt GitHub (github.com/natanfudge/KmpSqlencrypt)*
 
@@ -252,7 +252,7 @@ OTHER_LDFLAGS = $(inherited) -lSQLCipher
 
 ### Time-sensitive ViewModels must be pre-warmed
 
-A `viewModelScope` coroutine that polls the current hour (e.g. `BasilThemeViewModel`) continues running in the background on iOS when the app suspends. When the app foregrounds, the `StateFlow` already holds the correct value — no one-frame lag.
+A `viewModelScope` coroutine that polls the current hour (e.g. a `ThemeViewModel` that switches day/night) continues running in the background on iOS when the app suspends. When the app foregrounds, the `StateFlow` already holds the correct value — no one-frame lag.
 
 This is the correct pattern. The alternative (initialising from `LaunchedEffect` on foreground) produces a single-frame flash of the wrong theme.
 
@@ -309,7 +309,7 @@ steps:
 
 ### `androidx.lifecycle` ABI compatibility
 
-`androidx.lifecycle` 2.10.0 was compiled with Kotlin 2.2.20 (ABI 2.2.0). Basil uses Kotlin 2.1.21 (max ABI 1.201.0). Any `androidx.lifecycle` version compiled with a newer Kotlin than the project's Kotlin version will fail the iOS framework link with an ABI incompatibility error.
+`androidx.lifecycle` 2.10.0 was compiled with Kotlin 2.2.20 (ABI 2.2.0). A project on Kotlin 2.1.21 (max ABI 1.201.0) can't link it. Any `androidx.lifecycle` version compiled with a newer Kotlin than the project's Kotlin version will fail the iOS framework link with an ABI incompatibility error.
 
 Before bumping `androidx.lifecycle`, check the release notes for the Kotlin version it was compiled with. Downgrade if there is a mismatch.
 

@@ -34,9 +34,9 @@ and professional writing, not product copy. `copywriter` never touches personal 
 Standards are split into three layers, read in order:
 
 1. **`rules/weekendware-rules.md`** — universal rules that apply to every WeekendWare project (git, architecture, build, QA, security, accessibility, documentation)
-2. **`rules/<platform>-rules.md`** — platform-specific rules; currently `kmp-rules.md` for Kotlin Multiplatform. Future: `android-rules.md`, `ios-rules.md`, `web-rules.md`
+2. **`rules/<platform>-rules.md`** — platform-specific rules; currently `kmp-rules.md` for Kotlin Multiplatform and `ios-rules.md` for iOS. Future: `android-rules.md`, `web-rules.md`
 
-A third layer of project-specific rules extends these for each active project, but lives outside this repo.
+A third layer of project-specific rules extends these for each active project, but lives outside this repo. Everything committed here, the skills and both rule layers, stays project-agnostic: no project names or project-specific examples.
 
 Agents determine the platform first, then read universal → platform → project rules in that order.
 

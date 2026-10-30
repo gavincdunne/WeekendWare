@@ -51,9 +51,9 @@ implementation is complete when every test in the suite passes.
 
 ## How to approach the work
 
-1. **Read the project `CLAUDE.md` first.** For Basil, this means understanding the KMP
-   architecture, the existing ViewModel and screen patterns, the SQLDelight setup, and the
-   `AssistantService` integration pattern. Find the closest existing feature and follow it.
+1. **Read the project `CLAUDE.md` first.** Understand the app's architecture,
+   the existing ViewModel and screen patterns, the local storage setup, and how the app talks
+   to its backend services. Find the closest existing feature and follow it.
 
 2. **Read the TDD.** Understand the ViewModel state model, the API contract, the local storage
    schema, and the platform-specific `expect`/`actual` interfaces before writing anything.
